@@ -110,6 +110,17 @@ class NotebookLMAuditor:
         self._authenticated = True
         return status
 
+    def refresh_authentication(self) -> dict[str, Any]:
+        """Refresh the active profile in place and verify the renewed session."""
+        if not self._authenticated:
+            raise RuntimeError("Call authenticate() before refreshing authentication.")
+        self._run_command(
+            ["auth", "refresh", "--quiet"],
+            json_output=False,
+            timeout=60,
+        )
+        return self.authenticate()
+
     @staticmethod
     def _validate_sources(pdf_paths: Iterable[str | Path], notes_path: str | Path) -> list[Path]:
         paths = [Path(path).expanduser().resolve() for path in pdf_paths]

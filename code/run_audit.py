@@ -22,6 +22,9 @@ DEFAULT_NOTEBOOK_ID = "b0c5603e-e34a-4c97-b436-8577da5280eb"
 DEFAULT_NOTEBOOK_TITLE = "CPR Co-integration IM-OLS"
 DEFAULT_MASTER_LEDGER = "econometric_audit_master.md"
 DEFAULT_EXPECTED_SOURCE_COUNT = 14
+DEFAULT_EXCLUDED_SOURCES = (
+    "e6c4625f-929b-4531-8256-9124deac419e",
+)
 
 PHASE_LEDGER_NAMES = {
     1: "audit_phase_1_i2_trap.md",
@@ -96,6 +99,30 @@ class QueryRateLimiter:
         self.sleeper(self.thread_pause)
 
 
+class AuthenticationKeepalive:
+    """Refresh NotebookLM credentials before a long audit session expires."""
+
+    def __init__(
+        self,
+        *,
+        interval: float = 600.0,
+        clock: Any = None,
+    ) -> None:
+        if interval < 0:
+            raise ValueError("Authentication refresh interval cannot be negative.")
+        self.interval = interval
+        self.clock = clock or time.monotonic
+        self.last_refresh = self.clock()
+
+    def maybe_refresh(self, auditor: NotebookLMAuditor) -> bool:
+        if self.interval == 0 or self.clock() - self.last_refresh < self.interval:
+            return False
+        logging.info("Refreshing NotebookLM authentication keepalive.")
+        auditor.refresh_authentication()
+        self.last_refresh = self.clock()
+        return True
+
+
 def _question_prompt(question: dict[str, Any]) -> str:
     return f"""Audit ledger ID: {question["id"]}
 
@@ -116,14 +143,24 @@ state that fact and return a Fail verdict rather than repairing it silently."""
 def _master_ledger_header(
     notebook_id: str,
     notebook_title: str,
+    inventory_count: int,
     source_count: int,
+    excluded_sources: list[dict[str, Any]],
 ) -> str:
+    excluded_source_ids = ", ".join(
+        f'"{source["id"]}"' for source in excluded_sources
+    )
+    excluded_source_titles = "; ".join(
+        str(source.get("title") or source["id"]) for source in excluded_sources
+    )
     return f"""---
 type: econometric_audit_master
 status: running
 notebook_id: "{notebook_id}"
 notebook_title: "{notebook_title}"
+notebook_source_count: {inventory_count}
 source_intelligence_count: {source_count}
+excluded_source_ids: [{excluded_source_ids}]
 source_clusters: [1, 2, 3, 4, 5, 6]
 partition_key: audit_phase
 ---
@@ -133,7 +170,9 @@ partition_key: audit_phase
 |---|---|
 | NotebookLM notebook ID | `{notebook_id}` |
 | Generated | {datetime.now().astimezone().isoformat(timespec="seconds")} |
+| Ready notebook sources | {inventory_count} |
 | Source-intelligence threads | {source_count} |
+| Excluded from every query | {_table_cell(excluded_source_titles) or "None"} |
 | Source clusters | `cluster_1.csv` through `cluster_6.csv` |
 | Partition contract | Stable HTML boundary markers around every phase and question |
 
@@ -243,6 +282,41 @@ def _set_ledger_status(path: Path, status: str) -> None:
     path.write_text(updated, encoding="utf-8", newline="\n")
 
 
+def _select_audit_sources(
+    sources: list[dict[str, Any]],
+    exclusions: list[str],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Resolve exact source IDs/titles and return included and excluded sources."""
+    excluded_ids: set[str] = set()
+    excluded_sources: list[dict[str, Any]] = []
+    for selector in exclusions:
+        normalized = selector.strip()
+        if not normalized:
+            raise ValueError("Excluded source selectors cannot be blank.")
+        matches = [
+            source
+            for source in sources
+            if str(source.get("id", "")) == normalized
+            or str(source.get("title", "")).casefold() == normalized.casefold()
+        ]
+        if len(matches) != 1:
+            raise RuntimeError(
+                f"Excluded source selector must match exactly one ready source: "
+                f"{selector!r}; matched {len(matches)}."
+            )
+        source_id = str(matches[0]["id"])
+        if source_id not in excluded_ids:
+            excluded_ids.add(source_id)
+            excluded_sources.append(matches[0])
+
+    audit_sources = [
+        source for source in sources if str(source.get("id", "")) not in excluded_ids
+    ]
+    if not audit_sources:
+        raise RuntimeError("Source exclusions removed every ready notebook source.")
+    return audit_sources, excluded_sources
+
+
 def run_audit(args: argparse.Namespace) -> None:
     repo_root = Path(__file__).resolve().parents[1]
     cluster_directory = (args.cluster_directory or repo_root / "cluster_question_files").resolve()
@@ -272,6 +346,9 @@ def run_audit(args: argparse.Namespace) -> None:
         jitter_max=args.jitter_max,
         thread_pause=args.thread_pause,
     )
+    auth_keepalive = AuthenticationKeepalive(
+        interval=args.auth_refresh_interval,
+    )
     ledger_initialized = False
     failed_queries = 0
     try:
@@ -294,6 +371,17 @@ def run_audit(args: argparse.Namespace) -> None:
                 f"found {len(auditor.sources)}. Reconcile the source inventory "
                 "before running a destructive thread-reset audit."
             )
+        audit_sources, excluded_sources = _select_audit_sources(
+            auditor.sources,
+            args.exclude_source,
+        )
+        audit_source_ids = [str(source["id"]) for source in audit_sources]
+        for excluded_source in excluded_sources:
+            logging.info(
+                "Excluding source from every audit query: %s (%s)",
+                excluded_source.get("title") or excluded_source["id"],
+                excluded_source["id"],
+            )
 
         ledger_path.parent.mkdir(parents=True, exist_ok=True)
         if ledger_path.exists() and ledger_path.stat().st_size:
@@ -306,6 +394,8 @@ def run_audit(args: argparse.Namespace) -> None:
                 notebook_id,
                 auditor.notebook_title or DEFAULT_NOTEBOOK_TITLE,
                 len(auditor.sources),
+                len(audit_sources),
+                excluded_sources,
             ),
             encoding="utf-8",
             newline="\n",
@@ -313,14 +403,15 @@ def run_audit(args: argparse.Namespace) -> None:
         ledger_initialized = True
 
         _append_text(ledger_path, _source_intelligence_header())
-        for source_number, source in enumerate(auditor.sources, start=1):
+        for source_number, source in enumerate(audit_sources, start=1):
             source_id = str(source["id"])
             source_title = str(source.get("title") or source_id)
+            auth_keepalive.maybe_refresh(auditor)
             rate_limiter.before_query(new_thread=True)
             logging.info(
                 "Starting source-intelligence thread %d/%d: %s",
                 source_number,
-                len(auditor.sources),
+                len(audit_sources),
                 source_title,
             )
             try:
@@ -359,6 +450,7 @@ def run_audit(args: argparse.Namespace) -> None:
 
             for question_index, question in enumerate(questions):
                 is_new_phase_thread = question_index == 0
+                auth_keepalive.maybe_refresh(auditor)
                 rate_limiter.before_query(new_thread=is_new_phase_thread)
                 logging.info("Auditing question %s.", question["id"])
                 try:
@@ -366,11 +458,13 @@ def run_audit(args: argparse.Namespace) -> None:
                         answer = auditor.start_new_thread(
                             MASTER_SYSTEM_PROMPT,
                             _question_prompt(question),
+                            source_ids=audit_source_ids,
                         )
                     else:
                         answer = auditor.ask_question(
                             "",
                             _question_prompt(question),
+                            source_ids=audit_source_ids,
                         )
                     _append_text(
                         ledger_path,
@@ -403,6 +497,7 @@ def run_audit(args: argparse.Namespace) -> None:
                     )
             _append_text(ledger_path, _phase_footer(phase))
 
+        auth_keepalive.maybe_refresh(auditor)
         rate_limiter.before_final_reset()
         try:
             auditor.reset_thread()
@@ -476,9 +571,28 @@ def build_argument_parser() -> argparse.ArgumentParser:
         default=DEFAULT_EXPECTED_SOURCE_COUNT,
         help="Abort before resets if the ready source inventory has changed.",
     )
+    parser.add_argument(
+        "--exclude-source",
+        action="append",
+        default=list(DEFAULT_EXCLUDED_SOURCES),
+        help=(
+            "Exact source ID or title to exclude from source intelligence and "
+            "all phase queries. Repeat as needed. The known industrial-policy "
+            "source is excluded by default."
+        ),
+    )
     parser.add_argument("--jitter-min", type=float, default=8.0)
     parser.add_argument("--jitter-max", type=float, default=15.0)
     parser.add_argument("--thread-pause", type=float, default=30.0)
+    parser.add_argument(
+        "--auth-refresh-interval",
+        type=float,
+        default=600.0,
+        help=(
+            "Refresh and revalidate the active NotebookLM profile after this "
+            "many seconds during a run. Use 0 to disable the keepalive."
+        ),
+    )
     return parser
 
 

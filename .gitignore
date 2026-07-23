@@ -1,6 +1,9 @@
 # Rebuildable views generated from the canonical NotebookLM audit ledger.
 /working_ledgers/notebooklm/views/
 
+# Preserved failed or contaminated live-run evidence; never canonical.
+/working_ledgers/notebooklm/attempts/
+
 # Local Python bytecode and interpreter caches.
 __pycache__/
 *.py[cod]
