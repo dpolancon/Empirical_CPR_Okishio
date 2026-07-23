@@ -1,0 +1,6 @@
+# Rebuildable views generated from the canonical NotebookLM audit ledger.
+/working_ledgers/notebooklm/views/
+
+# Local Python bytecode and interpreter caches.
+__pycache__/
+*.py[cod]

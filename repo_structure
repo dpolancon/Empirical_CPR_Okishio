@@ -4,11 +4,19 @@ Empirical_CPR_Okishio/
 │   ├── replication_roadmap.md  # Step-by-step guide to running the pipeline
 │   └── variable_dictionary.md  # Definitions of y_tilde, k_tilde, omega
 │
+├── notes/                      # Provenance and source-level intelligence
+│   ├── _index.md               # Knowledge lifecycle and dual-link navigation
+│   ├── source_snapshots/
+│   │   └── i2_trap/            # Immutable E_00/E_01 copies + hash manifest
+│   └── source_intelligence/    # Review-gated dossier for each NotebookLM source
+│
 ├── concepts/                   # Econometric & Theoretical concept notes
 │   ├── i2_trap.md              # Why naive interaction terms fail (The Trap)
 │   ├── polynomial_cointegration.md # Wagner & Hong (2016) CPR framework
 │   ├── im_ols_framework.md     # Vogelsang & Wagner (2014) partial sum transformation
-│   └── fwl_orthogonalization.md # Resolving multicollinearity without bias
+│   ├── fwl_orthogonalization.md # Resolving multicollinearity without bias
+│   ├── cpr_cointegration_testing.md # Residual tests, scaling, and bootstrap null
+│   └── state_dependent_inference.md # Delta method and Gamma Wald restriction
 │
 ├── bridges/                    # The Critical Link: Theory <-> Econometrics
 │   ├── okishio_to_gamma.md     # Translating "decentralized inefficiency" into Gamma = (1-w) - theta
@@ -26,6 +34,9 @@ Empirical_CPR_Okishio/
 │   └── political_economy/      # Okishio, Vidal, Dumenil/Levy
 │
 ├── working_ledgers/            # Diagnostic logs & revision aids
+│   ├── notebooklm/
+│   │   ├── econometric_audit_master.md # Canonical append-only generated evidence
+│   │   └── views/              # Rebuildable, Git-ignored source/phase partitions
 │   ├── unit_root_ledger.md     # ADF/KPSS results for all variables
 │   ├── multicollinearity_vif.md # VIF checks before/after FWL orthogonalization
 │   └── stability_cusum.md      # Parameter stability checks (TVP vs static)
@@ -33,4 +44,7 @@ Empirical_CPR_Okishio/
 └── code/                       # The computational pipeline
     ├── python/                 # IM-OLS implementation & Data prep
     ├── R/                      # cointReg, urca, vars implementations
-    └── notebooklm_scraper.py   # (See below)
+    ├── notebooklm_engine/      # Authenticated client and thread reset adapter
+    ├── run_audit.py            # Dual-track source + phase audit
+    ├── partition_audit_ledger.py # Rebuild seven derived views
+    └── validate_note_repository.py # Hash, contract, and link validation

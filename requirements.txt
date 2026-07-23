@@ -1,0 +1,2 @@
+notebooklm-py[browser]==0.5.0
+pandas>=2.0.0
