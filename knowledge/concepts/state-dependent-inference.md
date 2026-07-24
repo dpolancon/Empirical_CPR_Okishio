@@ -45,6 +45,10 @@ Question `6.1` corrects the leading variance order to \(T^{-2}\), not
 limit. Question `6.3` shows that, conditional on fixed \(\bar\omega\),
 \((1-\bar\omega)-b-d\bar\omega=0\) is a linear restriction.
 
+T06 proves the three-regime rate decomposition and shows that omitting
+stationary-state uncertainty can reduce 95% coverage to 73.1% at \(T=1000\).
+The task remains blocked on T03’s estimator covariance.
+
 ## Audit verdict
 
 **Fail.** Phase 6 rejects the \(\sqrt T\) delta method, unconditional omission
@@ -73,4 +77,5 @@ contrasts from a functional band indexed by an integrated state.
 
 - [Wagner–Hong (2016)](../sources/dossiers/notebooklm/wagner-hong-2016.md) · [[wagner-hong-2016]]
 - [Vogelsang–Wagner (2014)](../sources/dossiers/notebooklm/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
+- [T06 — State-dependent inference](../theory/tasks/t06-state-dependent-inference.md) · [[t06-state-dependent-inference|T06 — State-dependent inference]]
 - [IM-OLS Framework](im-ols-framework.md) · [[im-ols-framework|IM-OLS Framework]]

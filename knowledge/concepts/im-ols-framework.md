@@ -10,7 +10,7 @@ created: "2026-07-23"
 updated: "2026-07-23"
 last_reviewed: "2026-07-23"
 source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
-source_dossiers: ["vogelsang-wagner-2014", "de-jong-wagner-2025"]
+source_dossiers: ["vogelsang-wagner-2014", "de-jong-wagner-2025", "stypka-et-al-2025"]
 audit_questions: ["3.1", "3.2", "3.3"]
 theory_tasks: ["t03-estimator-extension"]
 ---
@@ -44,6 +44,10 @@ Question `3.2` establishes that fixed-\(b\) inference has nonstandard, simulated
 critical values. Question `3.3` records coefficient rates \(T\) for \(x_t\)
 and \(T^{3/2}\) for \(x_t^2\) in the CPR extension.
 
+T03 confirms the scope boundary and records 70–82% naive interval coverage in
+the endogenous diagnostic. The extension remains blocked under the
+peer-reviewed-only closure rule.
+
 ## Audit verdict
 
 **Fail for the proposed extension.** Phase 3 rejects the claimed
@@ -72,4 +76,6 @@ appropriate to the proven design.
 
 - [Vogelsang–Wagner (2014)](../sources/dossiers/notebooklm/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
 - [de Jong–Wagner (2025)](../sources/dossiers/notebooklm/de-jong-wagner-2025.md) · [[de-jong-wagner-2025]]
+- [Stypka et al. (2025)](../sources/dossiers/local/stypka-et-al-2025.md) · [[stypka-et-al-2025|Stypka et al. (2025)]]
+- [T03 — Estimator extension](../theory/tasks/t03-estimator-extension.md) · [[t03-estimator-extension|T03 — Estimator extension]]
 - [Polynomial Cointegration](polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

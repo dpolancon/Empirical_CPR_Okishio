@@ -9,13 +9,21 @@ tags: ["econometrics", "sources"]
 created: "2026-07-23"
 updated: "2026-07-23"
 last_reviewed: "2026-07-23"
-contains: ["de-jong-wagner-2025", "e00-i2-trap-snapshot", "e01-i2-trap-snapshot", "engle-granger-1987", "grabarczyk-dissertation", "paruolo-1996", "pedroni-2000", "phillips-hansen-1990", "saikkonen-1991", "stock-watson-1993", "vogelsang-wagner-2014", "wagner-2023", "wagner-hong-2016"]
+contains: ["chang-park-phillips-2001", "de-jong-wagner-2025", "e00-i2-trap-snapshot", "e01-i2-trap-snapshot", "engle-granger-1987", "grabarczyk-dissertation", "lovell-1963", "park-phillips-2001", "paruolo-1996", "pedroni-2000", "phillips-hansen-1990", "saikkonen-1991", "stock-watson-1993", "stypka-et-al-2025", "stypka-wagner-2019", "vogelsang-wagner-2014", "wagner-2023", "wagner-hong-2016"]
 ---
 # Econometric Source Index
 
 The active corpus contains 13 NotebookLM dossiers from the completed audit.
 Locally reviewed peer-reviewed sources may be added without changing that
 historical NotebookLM corpus.
+
+## Related local dossiers
+
+- [Chang, Park, and Phillips (2001)](dossiers/local/chang-park-phillips-2001.md) · [[chang-park-phillips-2001|Chang, Park, and Phillips (2001)]]
+- [Park and Phillips (2001)](dossiers/local/park-phillips-2001.md) · [[park-phillips-2001|Park and Phillips (2001)]]
+- [Stypka and Wagner (2019)](dossiers/local/stypka-wagner-2019.md) · [[stypka-wagner-2019|Stypka and Wagner (2019)]]
+- [Stypka et al. (2025)](dossiers/local/stypka-et-al-2025.md) · [[stypka-et-al-2025|Stypka et al. (2025)]]
+- [Lovell (1963)](dossiers/local/lovell-1963.md) · [[lovell-1963|Lovell (1963)]]
 
 ## Related NotebookLM dossiers
 

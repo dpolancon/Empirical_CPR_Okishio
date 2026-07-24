@@ -42,6 +42,10 @@ wrong critical values as the problem. Question `5.2` fixes the squared
 partial-sum exponent at two. Question `5.3` finds no source support for the
 proposed I(2)-rank bootstrap.
 
+T05 verifies the oracle \(T^2\) and \(T^4\) residual partial-sum-square orders,
+but remains blocked because T03 has not supplied the fitted cross-product
+residual projection or valid critical values.
+
 ## Audit verdict
 
 **Fail.** All Phase 5 validation metrics failed.
@@ -68,4 +72,5 @@ projection limit is established.
 
 - [Wagner (2023)](../sources/dossiers/notebooklm/wagner-2023.md) · [[wagner-2023]]
 - [Grabarczyk dissertation](../sources/dossiers/notebooklm/grabarczyk-dissertation.md) · [[grabarczyk-dissertation]]
+- [T05 — CPR residual testing](../theory/tasks/t05-cpr-residual-testing.md) · [[t05-cpr-residual-testing|T05 — CPR residual testing]]
 - [Polynomial Cointegration](polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

@@ -10,7 +10,7 @@ created: "2026-07-23"
 updated: "2026-07-23"
 last_reviewed: "2026-07-23"
 source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
-source_dossiers: ["paruolo-1996", "wagner-hong-2016"]
+source_dossiers: ["paruolo-1996", "wagner-hong-2016", "chang-park-phillips-2001", "stypka-wagner-2019"]
 audit_questions: ["1.1", "1.2", "1.3"]
 theory_tasks: ["t01-cross-product-limit", "t02-normalized-design-and-rates"]
 ---
@@ -46,6 +46,11 @@ projection matrix. Wagner–Hong's model excludes cross-products, while
 Grabarczyk states that powers of integrated processes are not themselves
 integrated processes.
 
+T01 now proves the product and partial-sum functional limits and rejects the
+classical \(I(2)\) classification. T02 supplies the conditional full-design
+normalization and coefficient rates. Both resolutions remain qualified by
+their stated rank and innovation assumptions.
+
 ## Audit verdict
 
 **Fail / disputed.** All three Phase 1 validation metrics failed. In
@@ -77,4 +82,7 @@ without proving that it applies to this interaction.
 
 - [Paruolo (1996)](../sources/dossiers/notebooklm/paruolo-1996.md) · [[paruolo-1996]]
 - [Wagner–Hong (2016)](../sources/dossiers/notebooklm/wagner-hong-2016.md) · [[wagner-hong-2016]]
+- [Chang, Park, and Phillips (2001)](../sources/dossiers/local/chang-park-phillips-2001.md) · [[chang-park-phillips-2001|Chang, Park, and Phillips (2001)]]
+- [T01 — Cross-product limit](../theory/tasks/t01-cross-product-limit.md) · [[t01-cross-product-limit|T01 — Cross-product limit]]
+- [T02 — Normalized design and rates](../theory/tasks/t02-normalized-design-and-rates.md) · [[t02-normalized-design-and-rates|T02 — Normalized design and rates]]
 - [Polynomial Cointegration](polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

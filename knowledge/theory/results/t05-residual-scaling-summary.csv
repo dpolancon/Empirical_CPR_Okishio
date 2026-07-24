@@ -1,0 +1,9 @@
+process,sample_size,median_sum_squared_partial_residual
+stationary-residual,100,3034.170760322657
+stationary-residual,200,11839.581166365937
+stationary-residual,500,73334.7872291216
+stationary-residual,1000,299461.27394455235
+unit-root-residual,100,4128621.84262761
+unit-root-residual,200,63731999.996513754
+unit-root-residual,500,2424799610.804499
+unit-root-residual,1000,39832203635.38315

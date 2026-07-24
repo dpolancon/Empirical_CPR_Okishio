@@ -10,7 +10,7 @@ created: "2026-07-23"
 updated: "2026-07-23"
 last_reviewed: "2026-07-23"
 source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
-source_dossiers: ["wagner-hong-2016", "phillips-hansen-1990", "saikkonen-1991"]
+source_dossiers: ["wagner-hong-2016", "phillips-hansen-1990", "saikkonen-1991", "chang-park-phillips-2001", "park-phillips-2001", "stypka-et-al-2025"]
 audit_questions: ["1.1", "1.2", "2.1", "2.2", "2.3"]
 theory_tasks: ["t01-cross-product-limit", "t02-normalized-design-and-rates", "t03-estimator-extension"]
 ---
@@ -42,6 +42,10 @@ powers of \(I(1)\) regressors. Questions `2.1`–`2.3` reject asymptotic DOLS
 rank failure, LRCV estimation on nonstationary levels, and FM-OLS with an
 integrated regression error.
 
+T01 and T02 establish the cross-product’s polynomial limit and conditional
+mixed-rate design. T03 remains blocked because no admissible peer-reviewed
+source supplies the estimator correction for the exact interaction.
+
 ## Audit verdict
 
 **Qualified fail.** CPR is a valid framework for the source's polynomial
@@ -70,4 +74,6 @@ until its normalized moment limits and correction terms are derived.
 - [Wagner–Hong (2016)](../sources/dossiers/notebooklm/wagner-hong-2016.md) · [[wagner-hong-2016]]
 - [Phillips–Hansen (1990)](../sources/dossiers/notebooklm/phillips-hansen-1990.md) · [[phillips-hansen-1990]]
 - [Saikkonen (1991)](../sources/dossiers/notebooklm/saikkonen-1991.md) · [[saikkonen-1991]]
+- [Park and Phillips (2001)](../sources/dossiers/local/park-phillips-2001.md) · [[park-phillips-2001|Park and Phillips (2001)]]
+- [T03 — Estimator extension](../theory/tasks/t03-estimator-extension.md) · [[t03-estimator-extension|T03 — Estimator extension]]
 - [The I(2) Trap](i2-trap.md) · [[i2-trap|The I(2) Trap]]

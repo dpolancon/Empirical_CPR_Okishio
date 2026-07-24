@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import hashlib
 import json
 import re
@@ -251,6 +252,7 @@ def _validate_graph(
             for note_id, (_, data, _) in notes.items()
             if data.get("type") == "concept"
         },
+        "contains": set(notes) - {EXCLUDED_SOURCE_ID},
     }
 
     for note_id, (path, data, body) in notes.items():
@@ -314,6 +316,47 @@ def _validate_graph(
     source_index = notes.get("source-index")
     if source_index and EXCLUDED_SOURCE_ID in source_index[1].get("contains", []):
         errors.append("source-index: industrial-policy source cannot be active")
+
+    expected_by_index = {
+        "source-index": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "source-dossier" and data.get("status") != "excluded"
+        },
+        "concept-index": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "concept"
+        },
+        "theory-index": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "theory-task"
+        },
+    }
+    for index_id, expected in expected_by_index.items():
+        index = notes.get(index_id)
+        if index is None:
+            errors.append(f"Missing required index {index_id}")
+            continue
+        actual = set(index[1].get("contains", []))
+        if actual != expected:
+            errors.append(
+                f"{index[0]}: contains differs from discovered notes; "
+                f"missing={sorted(expected - actual)}, extra={sorted(actual - expected)}"
+            )
+
+    notebook_source_owners: dict[str, str] = {}
+    for note_id, (path, data, _) in notes.items():
+        source_id = data.get("notebooklm_source_id")
+        if not source_id:
+            continue
+        owner = notebook_source_owners.get(str(source_id))
+        if owner is not None:
+            errors.append(
+                f"{path}: duplicate notebooklm_source_id shared with {owner}"
+            )
+        notebook_source_owners[str(source_id)] = note_id
 
     # Dependency DAG cycle detection.
     dependencies = {
@@ -436,6 +479,74 @@ def _validate_ledger_and_views(repo_root: Path) -> list[str]:
     return errors
 
 
+def _read_csv(path: Path) -> list[dict[str, str]]:
+    with path.open(encoding="utf-8", newline="") as source:
+        return list(csv.DictReader(source))
+
+
+def _validate_theory_results(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    result_dir = repo_root / "knowledge" / "theory" / "results"
+    manifest_path = result_dir / "run-manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"{manifest_path}: cannot read theory result manifest: {exc}"]
+    if manifest.get("seed") != 20260723:
+        errors.append(f"{manifest_path}: unexpected simulation seed")
+    if manifest.get("replications") != 10_000:
+        errors.append(f"{manifest_path}: expected 10000 replications")
+    if manifest.get("sample_sizes") != [100, 200, 500, 1000]:
+        errors.append(f"{manifest_path}: unexpected sample-size design")
+    for artifact in manifest.get("artifacts", []):
+        path = result_dir / str(artifact)
+        if not path.is_file() or not path.stat().st_size:
+            errors.append(f"{path}: theory artifact missing or empty")
+
+    checks = (
+        ("t01-rate-checks.csv", 18),
+        ("t02-rate-checks.csv", 16),
+        ("t05-residual-rate-checks.csv", 2),
+    )
+    for filename, expected_count in checks:
+        path = result_dir / filename
+        rows = _read_csv(path)
+        passed = [row for row in rows if row.get("passes_tolerance") == "True"]
+        if len(rows) != expected_count or len(passed) != expected_count:
+            errors.append(
+                f"{path}: expected {expected_count} passing rate checks; "
+                f"found {len(passed)}/{len(rows)}"
+            )
+
+    fwl_path = result_dir / "t04-fwl-check.json"
+    fwl = json.loads(fwl_path.read_text(encoding="utf-8"))
+    if not fwl.get("fwl_identity_passes") or not fwl.get("noncommutation_detected"):
+        errors.append(f"{fwl_path}: FWL algebra checks failed")
+
+    state_path = result_dir / "t06-state-inference-summary.csv"
+    state_rows = _read_csv(state_path)
+    gated = [
+        row
+        for row in state_rows
+        if int(row["sample_size"]) >= 500
+        and not row["regime"].endswith("-naive")
+    ]
+    if len(gated) != 6 or any(row["passes_coverage_gate"] != "True" for row in gated):
+        errors.append(f"{state_path}: corrected large-sample coverage gate failed")
+
+    estimator_path = result_dir / "t03-naive-estimator-diagnostic.csv"
+    estimator_rows = _read_csv(estimator_path)
+    if not estimator_rows or any(
+        row["passes_coverage_gate"] != "False" for row in estimator_rows
+    ):
+        errors.append(
+            f"{estimator_path}: expected every naive endogeneity coverage check to fail"
+        )
+    if (result_dir / "raw").exists():
+        errors.append(f"{result_dir / 'raw'}: raw Monte Carlo draws must not be committed")
+    return errors
+
+
 def validate_repository(repo_root: Path) -> list[str]:
     repo_root = repo_root.resolve()
     paths = _editable_markdown_files(repo_root)
@@ -444,6 +555,7 @@ def validate_repository(repo_root: Path) -> list[str]:
     errors.extend(_validate_graph(repo_root, notes))
     errors.extend(_validate_links(notes, repo_root))
     errors.extend(_validate_ledger_and_views(repo_root))
+    errors.extend(_validate_theory_results(repo_root))
     return errors
 
 

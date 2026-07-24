@@ -1,0 +1,9 @@
+{
+  "seed": 20260723,
+  "fwl_coefficient_max_abs_difference": 2.6645352591003757e-15,
+  "fwl_covariance_max_abs_difference": 2.1358782797964437e-17,
+  "transform_residualizer_frobenius_difference": 14.252989861902206,
+  "identity_tolerance": 1e-10,
+  "fwl_identity_passes": true,
+  "noncommutation_detected": true
+}

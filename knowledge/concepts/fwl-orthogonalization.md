@@ -10,7 +10,7 @@ created: "2026-07-23"
 updated: "2026-07-23"
 last_reviewed: "2026-07-23"
 source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
-source_dossiers: ["wagner-hong-2016", "vogelsang-wagner-2014"]
+source_dossiers: ["wagner-hong-2016", "vogelsang-wagner-2014", "lovell-1963"]
 audit_questions: ["4.1", "4.2", "4.3"]
 theory_tasks: ["t04-transformed-fwl"]
 ---
@@ -41,6 +41,10 @@ also produces an \(O_p(T)\) fitted component. Question `4.2` proves the
 noncommutation of \(S\) and \(M_X\). Question `4.3` shows that demeaning or
 detrending changes the limiting Brownian functional.
 
+T04 proves that transformed-design FWL reproduces the full transformed
+coefficient and covariance block, while \(SM_X\neq M_{SX}S\) in general. Its
+numerical identities pass at \(10^{-10}\).
+
 ## Audit verdict
 
 **Fail.** Phase 4 rejects the claimed negligible projection and exact
@@ -68,4 +72,6 @@ interaction's stochastic order or inference is unchanged.
 
 - [Wagner–Hong (2016)](../sources/dossiers/notebooklm/wagner-hong-2016.md) · [[wagner-hong-2016]]
 - [Vogelsang–Wagner (2014)](../sources/dossiers/notebooklm/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
+- [Lovell (1963)](../sources/dossiers/local/lovell-1963.md) · [[lovell-1963|Lovell (1963)]]
+- [T04 — Transformed FWL](../theory/tasks/t04-transformed-fwl.md) · [[t04-transformed-fwl|T04 — Transformed FWL]]
 - [IM-OLS Framework](im-ols-framework.md) · [[im-ols-framework|IM-OLS Framework]]

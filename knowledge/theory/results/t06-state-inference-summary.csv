@@ -1,0 +1,17 @@
+sample_size,regime,coverage_95,passes_coverage_gate,scope
+100,fixed-state,0.9472,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+100,integrated-path-state,0.9494,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+100,estimated-stationary-state,0.9488,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+100,estimated-stationary-state-naive,0.9106,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+200,fixed-state,0.9456,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+200,integrated-path-state,0.9478,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+200,estimated-stationary-state,0.9483,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+200,estimated-stationary-state-naive,0.8811,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+500,fixed-state,0.9485,True,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+500,integrated-path-state,0.949,True,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+500,estimated-stationary-state,0.9489,True,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+500,estimated-stationary-state-naive,0.8096,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+1000,fixed-state,0.9473,True,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+1000,integrated-path-state,0.9481,True,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+1000,estimated-stationary-state,0.9494,True,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
+1000,estimated-stationary-state-naive,0.7308,,exogenous oracle OLS; estimator uncertainty from T03 remains unresolved
