@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "migrated_at": "2026-07-23",
+  "mappings": {
+    "notes/_index.md": "knowledge/knowledge-index.md",
+    "notes/source_snapshots/i2_trap/E_00_I2_Trap.md": "knowledge/sources/snapshots/i2-trap/e-00-i2-trap.md",
+    "notes/source_snapshots/i2_trap/E_01_I2_Trap.md": "knowledge/sources/snapshots/i2-trap/e-01-i2-trap.md",
+    "notes/source_snapshots/i2_trap/manifest.json": "knowledge/sources/snapshots/i2-trap/manifest.json",
+    "notes/source_intelligence/": "knowledge/sources/dossiers/notebooklm/",
+    "notes/source_intelligence/industrial-policy-beyond-hegemons.md": "knowledge/sources/dossiers/excluded/industrial-policy-beyond-hegemons.md",
+    "concepts/cpr_cointegration_testing.md": "knowledge/concepts/cpr-cointegration-testing.md",
+    "concepts/fwl_orthogonalization.md": "knowledge/concepts/fwl-orthogonalization.md",
+    "concepts/i2_trap.md": "knowledge/concepts/i2-trap.md",
+    "concepts/im_ols_framework.md": "knowledge/concepts/im-ols-framework.md",
+    "concepts/polynomial_cointegration.md": "knowledge/concepts/polynomial-cointegration.md",
+    "concepts/state_dependent_inference.md": "knowledge/concepts/state-dependent-inference.md",
+    "cluster_question_files/cluster_1.csv": "knowledge/evidence/notebooklm/questions/phase-01.csv",
+    "cluster_question_files/cluster_2.csv": "knowledge/evidence/notebooklm/questions/phase-02.csv",
+    "cluster_question_files/cluster_3.csv": "knowledge/evidence/notebooklm/questions/phase-03.csv",
+    "cluster_question_files/cluster_4.csv": "knowledge/evidence/notebooklm/questions/phase-04.csv",
+    "cluster_question_files/cluster_5.csv": "knowledge/evidence/notebooklm/questions/phase-05.csv",
+    "cluster_question_files/cluster_6.csv": "knowledge/evidence/notebooklm/questions/phase-06.csv",
+    "working_ledgers/notebooklm/econometric_audit_master.md": "knowledge/evidence/notebooklm/econometric-audit-master.md",
+    "working_ledgers/notebooklm/views/": "knowledge/evidence/notebooklm/views/",
+    "working_ledgers/notebooklm/attempts/": "knowledge/evidence/notebooklm/attempts/",
+    "bridges/": "knowledge/bridges/"
+  }
+}

@@ -1,8 +1,14 @@
 # Rebuildable views generated from the canonical NotebookLM audit ledger.
-/working_ledgers/notebooklm/views/
+/knowledge/evidence/notebooklm/views/
 
 # Preserved failed or contaminated live-run evidence; never canonical.
-/working_ledgers/notebooklm/attempts/
+/knowledge/evidence/notebooklm/attempts/
+
+# Locally acquired papers and non-redistributable source files.
+/literature/library/
+
+# Raw Monte Carlo draws are intentionally disposable.
+/knowledge/theory/results/raw/
 
 # Local Python bytecode and interpreter caches.
 __pycache__/
