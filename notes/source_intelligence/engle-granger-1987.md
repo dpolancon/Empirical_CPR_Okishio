@@ -1,7 +1,7 @@
 ---
 id: engle-granger-1987
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Engle Granger 1987"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,39 @@ source_title: "EngleGranger-CoIntegrationErrorCorrection-1987.pdf"
 source_type: PDF
 related_audit_phases: [1, 5]
 related_audit_questions: ["1.2", "5.1"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Engle–Granger (1987)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; source-level human verification remains required.
 
 ## Bibliographic identity
 
-Pending verification of title, venue, and pagination.
+Engle and Granger (1987), foundational representation and error-correction
+results for cointegrated \(I(1)\) systems.
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Connects cointegration to an error-correction representation.
+- Characterizes cointegrating vectors through the null space of the long-run
+  impact matrix \(C(1)\).
+- Establishes the two-step long-run/short-run estimation logic.
 
 ## Critical insights for the I(2) validation
 
-Separate foundational I(1) cointegration results from claims requiring CPR theory.
+The paper supplies the definition that a valid cointegrating regression has an
+\(I(0)\) equilibrium error; it does not validate nonlinear cross-products or
+CPR-specific critical values.
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+For cointegrating rank \(r\), \(C(1)\) has rank \(N-r\) and a cointegrating
+vector satisfies \(\alpha'C(1)=0\).
 
 ## Limitations and prohibited inferences
 
-Do not extend an I(1) representation theorem to polynomial I(2) regressors without proof.
+Do not extend its linear \(I(1)\) representation theorem to polynomial or
+cross-product regressors without a separate limit theory.
 
 ## Audit links
 

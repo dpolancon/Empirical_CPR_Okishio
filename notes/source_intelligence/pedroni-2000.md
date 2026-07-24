@@ -1,7 +1,7 @@
 ---
 id: pedroni-2000
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Pedroni 2000"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,36 @@ source_title: "Pedroni2000.pdf"
 source_type: PDF
 related_audit_phases: [2, 5]
 related_audit_questions: ["2.2", "5.1"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Pedroni (2000)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; source-level human verification remains required.
 
 ## Bibliographic identity
 
-Pending verification of the exact paper represented by the filename.
+Pedroni (2000), “Fully modified OLS for heterogeneous cointegrated panels.”
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Develops FM-OLS for heterogeneous \(I(1)\) cointegrated panels.
+- Corrects panel-specific endogeneity and serial-correlation bias.
+- Uses sequential \(T\) then \(N\) asymptotics.
 
 ## Critical insights for the I(2) validation
 
-Identify whether any panel FM-OLS result transfers to the single-equation CPR setting.
+The estimator transforms stationary innovations in a linear \(I(1)\) panel; it
+does not provide a cross-product CPR correction.
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+The result assumes an \(I(0)\) cointegrating error and panel-specific long-run
+covariance quantities.
 
 ## Limitations and prohibited inferences
 
-Do not import panel asymptotics into a single-country time-series CPR without justification.
+Do not import sequential panel asymptotics or critical values into the
+single-country time-series model.
 
 ## Audit links
 

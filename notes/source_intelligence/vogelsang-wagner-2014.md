@@ -1,7 +1,7 @@
 ---
 id: vogelsang-wagner-2014
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Vogelsang Wagner 2014", "IM-OLS"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,39 @@ source_title: "VogelsanWagner2014.pdf"
 source_type: PDF
 related_audit_phases: [3, 4, 6]
 related_audit_questions: ["3.1", "3.2", "3.3", "4.2", "6.1", "6.3"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Vogelsang–Wagner (2014)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; direct scope verification completed, with human review
+> still required.
 
 ## Bibliographic identity
 
-Pending verification from the source; retain the NotebookLM filename typo only as provenance.
+Vogelsang and Wagner (2014), “Integrated modified OLS estimation and fixed-b
+inference for cointegrating regressions,” *Journal of Econometrics* 178,
+741–760.
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Introduces IM-OLS through an augmented partial-sum transformation.
+- Avoids LRCV estimation and tuning choices for point estimation.
+- Develops residual-adjusted fixed-\(b\) inference.
 
 ## Critical insights for the I(2) validation
 
-Focus on the integration transformation, coefficient rates, and fixed-\(b\) inference.
+The base theorem starts with \(I(1)\) regressors and an \(I(0)\) error. The
+untransformed \(x_t\) augmentation absorbs the long-run endogeneity parameter.
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+The transformed regression includes \(Sx_t\) and \(x_t\); fixed-\(b\) pivotality
+requires adjusted residuals and yields nonstandard critical values.
 
 ## Limitations and prohibited inferences
 
-Distinguish the original linear IM-OLS setting from later multivariate CPR extensions.
+Do not describe the method as an established \(I(2)\rightarrow I(3)\)
+transformation for the project's interaction.
 
 ## Audit links
 

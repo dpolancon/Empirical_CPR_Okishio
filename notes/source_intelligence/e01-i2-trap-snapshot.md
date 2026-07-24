@@ -1,7 +1,7 @@
 ---
 id: e01-i2-trap-snapshot
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["E01 I2 Trap Source Dossier"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,11 +10,11 @@ source_title: "E_01_I2_Trap.md"
 source_type: MARKDOWN
 related_audit_phases: [1, 2, 3, 4, 5, 6]
 related_audit_questions: ["1.1", "1.2", "1.3", "2.1", "2.2", "2.3", "3.1", "3.2", "3.3", "4.1", "4.2", "4.3", "5.1", "5.2", "5.3", "6.1", "6.2", "6.3"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # E_01 I(2) Trap Source Dossier
 
-> Awaiting audit. This dossier describes a project-note snapshot, not an external paper.
+> Curated audit draft for an internal snapshot; it is not independent evidence.
 
 ## Bibliographic identity
 
@@ -22,19 +22,26 @@ Project framework snapshot preserved under `notes/source_snapshots/i2_trap/`.
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Expands E_00 into an estimator and testing protocol.
+- Supplies proposed rate matrices, FWL steps, residual tests, and Wald formulas.
+- Includes implementation guidance and numerical claims requiring source checks.
 
 ## Critical insights for the I(2) validation
 
-Record which derivations, estimator claims, code, and simulated values survive review.
+All 18 mandatory validation metrics failed. The most consequential errors are
+the automatic \(I(2)\) label, the IM-OLS extension, FWL commutation, residual
+test scaling rationale, and \(\sqrt T\) state-dependent inference.
 
 ## Formal results, assumptions, and rank conditions
 
-Pending audit against the uploaded econometric literature.
+The proposed “Theorem” labels are not substitutes for published results.
+Wagner–Hong excludes cross-products, and Vogelsang–Wagner begins from an
+\(I(1)\) linear cointegrating regression.
 
 ## Limitations and prohibited inferences
 
-Do not treat numerical examples or approximate critical values as validated.
+Do not implement or cite its approximate critical values, simulated values, or
+interaction rate claims until a source proves the exact design.
 
 ## Audit links
 

@@ -1,50 +1,63 @@
 ---
 id: polynomial-cointegration
 type: canonical_concept
-status: awaiting_audit
+status: under_review
 aliases: ["Polynomial Cointegration", "polynomial_cointegration", "CPR"]
 source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
 audit_phases: [1, 2]
 audit_questions: ["1.1", "1.2", "2.1", "2.2", "2.3"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Polynomial Cointegration
 
-> Not yet authoritative. Promote claims only after reviewing Phases 1 and 2.
+> Review-gated correction. The established CPR results do not automatically
+> cover the project's cross-product interaction.
 
 ## Formal claim
 
-Pending a precise definition of the project model as a cointegrating
-polynomial regression with mixed stochastic orders.
+A standard CPR contains deterministic terms and integer powers of underlying
+\(I(1)\) processes with an \(I(0)\) regression error. Wagner–Hong derives
+FM-OLS for an additively separable basis and explicitly excludes cross-products
+of distinct integrated regressors.
 
 ## Assumptions and rank conditions
 
-Pending validation of CPR basis construction, normalization matrices,
-endogeneity conditions, and long-run covariance requirements.
+- Stationary innovations \(\eta_t=(u_t,v_t')'\) with a finite long-run
+  covariance matrix.
+- Positive-definite innovation covariance and a nondegenerate normalized
+  polynomial design.
+- Additive separability for the published Wagner–Hong result.
+- A full-row-rank scaled restriction \(G_RRG\to R^*\) for Wald inference.
 
 ## Proof or theorem evidence
 
-Review questions `1.1`, `1.2`, and `2.1`–`2.3` against Wagner–Hong,
-Phillips–Hansen, Saikkonen, and Stock–Watson.
+Wagner–Hong supplies the FM-CPR transformation and mixed-normal limit for
+powers of \(I(1)\) regressors. Questions `2.1`–`2.3` reject asymptotic DOLS
+rank failure, LRCV estimation on nonstationary levels, and FM-OLS with an
+integrated regression error.
 
 ## Audit verdict
 
-**Pending.**
+**Qualified fail.** CPR is a valid framework for the source's polynomial
+basis, but the notes' interaction-specific extension and claimed DOLS/FM-OLS
+failure mechanisms are unsupported.
 
 ## Required correction
 
-Separate proven CPR results from intuitive extensions of conventional FM-OLS
-or DOLS.
+State the additive-separability boundary explicitly. Treat DOLS regressor
+proliferation as a finite-sample concern, and estimate FM corrections from
+stationary innovations rather than an alleged \(I(2)\) spectral density.
 
 ## Implementation implications
 
-The validated framework will determine which regressor transformations and
-bias corrections are admissible.
+Do not apply FM-CPR, DOLS, or their standard errors to the cross-product model
+until its normalized moment limits and correction terms are derived.
 
 ## Unresolved questions
 
-- Which uploaded source proves the exact interaction-product case?
-- Which DOLS and FM-OLS failure claims are asymptotic results versus finite-sample warnings?
+- No uploaded source proves the exact interaction-product case.
+- The appropriate FM correction and rate matrix for a cross-product of
+  distinct \(I(1)\) processes remain to be established.
 
 ## Related notes
 

@@ -1,50 +1,66 @@
 ---
 id: im-ols-framework
 type: canonical_concept
-status: awaiting_audit
+status: under_review
 aliases: ["IM-OLS Framework", "im_ols_framework", "Integrated Modified OLS"]
 source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
 audit_phases: [3]
 audit_questions: ["3.1", "3.2", "3.3"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # IM-OLS Framework
 
-> Not yet authoritative. Promote claims only after reviewing Phase 3 evidence.
+> Review-gated correction. The published IM-OLS theorem is for a conventional
+> \(I(1)\) cointegrating regression, not the proposed cross-product design.
 
 ## Formal claim
 
-Pending validation of the partial-sum transformation and the estimator's
-limiting distribution for mixed polynomial regressors.
+Vogelsang–Wagner transforms an \(I(1)\) cointegrating regression into
+\[
+Sy_t=Sf_t'\delta+Sx_t'\beta+x_t'\gamma+Su_t,
+\]
+where the untransformed \(x_t\) augmentation absorbs long-run endogeneity.
+The method avoids explicit LRCV estimation for point estimation; this is not a
+proof that cumulating an alleged \(I(2)\) interaction validates IM-OLS.
 
 ## Assumptions and rank conditions
 
-Pending validation of innovation, deterministic-term, full-rank, and
-fixed-\(b\) assumptions.
+- The original regressor is \(I(1)\) and the cointegrating error is \(I(0)\).
+- The transformed augmented design is full rank.
+- Residual adjustment is required for pivotal fixed-\(b\) inference.
+- Fixed-\(b\) critical values depend on bandwidth, kernel, deterministic terms,
+  and design.
 
 ## Proof or theorem evidence
 
-Review questions `3.1`, `3.2`, and `3.3` against Vogelsang–Wagner and the
-multivariate extension attributed to de Jong–Wagner.
+Vogelsang–Wagner's Theorem 2 supplies the augmented partial-sum estimator.
+Question `3.2` establishes that fixed-\(b\) inference has nonstandard, simulated
+critical values. Question `3.3` records coefficient rates \(T\) for \(x_t\)
+and \(T^{3/2}\) for \(x_t^2\) in the CPR extension.
 
 ## Audit verdict
 
-**Pending.**
+**Fail for the proposed extension.** Phase 3 rejects the claimed
+\(I(2)\rightarrow I(3)\) justification, nuisance-parameter “irrelevance,”
+standard fixed-\(b\) critical values, and the stated rate matrix.
 
 ## Required correction
 
-Do not claim that long-run covariance estimation is universally irrelevant
-until the exact theorem and transformation are verified.
+Restrict IM-OLS claims to the theorem's \(I(1)\) model. Derive a separate
+augmented transformation and joint rate matrix before using IM-OLS for the
+cross-product interaction.
 
 ## Implementation implications
 
-Validated rate matrices and inference determine the transformed regression,
-standard errors, and coefficient interpretation.
+Do not implement the E_01 IM-OLS specification as validated. Any exploratory
+implementation must be labelled provisional and use simulated critical values
+appropriate to the proven design.
 
 ## Unresolved questions
 
-- What is the exact joint rate matrix for the interactive CPR?
-- Does fixed-\(b\) inference require nonstandard critical values?
+- The exact joint rate matrix for the interactive CPR is unproved.
+- The residual adjustment and full-design condition for the interaction remain
+  unverified.
 
 ## Related notes
 

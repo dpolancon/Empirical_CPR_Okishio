@@ -1,7 +1,7 @@
 ---
 id: paruolo-1996
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Paruolo 1996", "Paurolo1996"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,39 @@ source_title: "Paurolo1996.pdf"
 source_type: PDF
 related_audit_phases: [1]
 related_audit_questions: ["1.1", "1.2"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Paruolo (1996)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; direct scope verification completed, with human review
+> still required.
 
 ## Bibliographic identity
 
-Pending verification from the source; retain the NotebookLM filename typo only as an alias.
+Paruolo (1996), “On the determination of integration indices in I(2)
+systems,” *Journal of Econometrics* 72, 313–356.
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Estimates the numbers of \(I(0)\), \(I(1)\), and \(I(2)\) common components
+  in a VAR system.
+- Uses a two-stage sequence of regression and reduced-rank regression tests.
+- Derives limiting Gaussian-functional rank-test distributions.
 
 ## Critical insights for the I(2) validation
 
-Focus on integration indices, rank restrictions, and the distinction between I(2) systems and CPRs.
+The source addresses system-level linear \(I(2)\) integration indices. It does
+not establish that a nonlinear product regressor is \(I(2)\).
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+The impact matrix and a projected derivative matrix satisfy nested reduced-rank
+conditions that partition the system into integration indices.
 
 ## Limitations and prohibited inferences
 
-Do not conflate system-level I(2) cointegration ranks with single-equation polynomial cointegration.
+Do not import Paruolo's VAR ranks into a single-equation CPR or bootstrap DGP
+without proving an equivalent system representation.
 
 ## Audit links
 

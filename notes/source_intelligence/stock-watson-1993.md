@@ -1,7 +1,7 @@
 ---
 id: stock-watson-1993
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Stock Watson 1993", "DOLS"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,38 @@ source_title: "StockWatson1993_DOLS.pdf"
 source_type: PDF
 related_audit_phases: [2]
 related_audit_questions: ["2.1"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Stock–Watson (1993)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; source-level human verification remains required.
 
 ## Bibliographic identity
 
-Pending verification from the source.
+Stock and Watson (1993), “A Simple Estimator of Cointegrating Vectors in
+Higher Order Integrated Systems.”
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Gives canonical transformations for higher-order integrated systems.
+- Uses dynamic leads and lags to obtain efficient single-equation estimates.
+- Derives mixed-rate, chi-squared inference under recursive rank conditions.
 
 ## Critical insights for the I(2) validation
 
-Separate higher-order integrated-system results from CPR-specific nonlinear augmentation.
+The paper concerns linear higher-order integrated systems. It does not prove
+that a product of distinct \(I(1)\) levels belongs to one of those canonical
+subspaces.
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+Recursive reduced-rank conditions partition \(I(d),I(d-1),\ldots\) common
+trends and determine the block scaling matrix.
 
 ## Limitations and prohibited inferences
 
-Do not label a DOLS design singular without a source-grounded rank derivation.
+Do not use the paper's \(I(d)\) decomposition as a shortcut for nonlinear CPR
+cross-products.
 
 ## Audit links
 

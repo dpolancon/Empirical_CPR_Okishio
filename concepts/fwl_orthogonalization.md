@@ -1,50 +1,62 @@
 ---
 id: fwl-orthogonalization
 type: canonical_concept
-status: awaiting_audit
+status: under_review
 aliases: ["FWL Orthogonalization", "fwl_orthogonalization", "Orthogonalized Interaction"]
 source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
 audit_phases: [4]
 audit_questions: ["4.1", "4.2", "4.3"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # FWL Orthogonalization
 
-> Not yet authoritative. Promote claims only after reviewing Phase 4 evidence.
+> Review-gated correction. Static FWL equivalence does not survive a
+> pre-orthogonalize-then-partial-sum workflow automatically.
 
 ## Formal claim
 
-Pending validation of coefficient and test-statistic invariance after
-partialling the interaction term with nonstationary regressors.
+FWL is an exact algebraic identity when partialling is performed within the
+same regression and inner product. If \(S\) is the partial-sum operator,
+generally \(SM_X\neq M_{SX}S\); consequently, orthogonalizing in levels and
+then applying IM-OLS need not preserve the raw-interaction coefficient or its
+t-statistic.
 
 ## Assumptions and rank conditions
 
-Pending validation of deterministic components, projection spaces, mixed-order
-scaling, and transformed-regression equivalence.
+- Identical transformed design, weights, deterministic controls, and covariance
+  estimator on both sides of the FWL comparison.
+- Full column rank of the relevant transformed design.
+- Deterministic terms included jointly or partialled in the same metric.
 
 ## Proof or theorem evidence
 
-Review questions `4.1`, `4.2`, and `4.3` against Wagner–Hong,
-Vogelsang–Wagner, and de Jong–Wagner.
+Question `4.1` shows that projecting an \(O_p(T)\) product on \(I(1)\) levels
+also produces an \(O_p(T)\) fitted component. Question `4.2` proves the
+noncommutation of \(S\) and \(M_X\). Question `4.3` shows that demeaning or
+detrending changes the limiting Brownian functional.
 
 ## Audit verdict
 
-**Pending.**
+**Fail.** Phase 4 rejects the claimed negligible projection and exact
+IM-OLS t-statistic invariance.
 
 ## Required correction
 
-Do not present reduced multicollinearity as proof of unchanged asymptotic
-inference without the required projection algebra.
+If orthogonalization is used for numerical conditioning, perform FWL inside
+the final transformed regression and recompute its covariance estimator.
+Never transfer a t-statistic from a different projection problem.
 
 ## Implementation implications
 
-The verdict determines the auxiliary regression, deterministic controls, and
-whether inference can be transferred to the orthogonalized interaction.
+Treat orthogonalization as a parameterization choice, not as evidence that the
+interaction's stochastic order or inference is unchanged.
 
 ## Unresolved questions
 
-- Does the residual retain the full \(I(2)\) trend?
-- Does the partial-sum transformation commute with the FWL projection used here?
+- The exact stochastic order of the residualized cross-product requires a
+  model-specific limit.
+- A numerically stable transformed-design FWL implementation still needs to be
+  specified and tested.
 
 ## Related notes
 

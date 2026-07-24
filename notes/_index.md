@@ -3,7 +3,7 @@ id: econometric-knowledge-index
 type: knowledge_index
 status: active
 aliases: ["Econometric Knowledge Index", "I2 Audit Index"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Econometric Knowledge Index
 
@@ -14,7 +14,8 @@ claim, until it is promoted into a reviewed concept note.
 ## Lifecycle
 
 1. **Source snapshots:** immutable `E_00` and `E_01` copies plus their hash manifest.
-2. **Source intelligence:** one review-gated dossier for each NotebookLM source.
+2. **Source intelligence:** 13 review-gated audit dossiers plus one explicitly
+   excluded out-of-scope source.
 3. **Audit evidence:** the append-only master ledger under `working_ledgers/notebooklm/`.
 4. **Canonical concepts:** atomic, human-reviewed econometric claims under `concepts/`.
 
@@ -26,6 +27,11 @@ claim, until it is promoted into a reviewed concept note.
 | `under_review` | Evidence is being checked against the cited source. |
 | `validated` | The claim and its conditions have passed human review. |
 | `disputed` | Evidence conflicts or the claim is not supported. |
+| `excluded` | The source is outside the econometric audit corpus. |
+
+The completed NotebookLM run contains 13 source-intelligence responses and 18
+phase answers. All 18 proposed validation metrics failed, so the concept notes
+remain `under_review` rather than `validated`.
 
 ## Related concept notes
 
@@ -44,7 +50,7 @@ claim, until it is promoted into a reviewed concept note.
 
 ## Related source intelligence
 
-- [Industrial policy beyond the hegemons](source_intelligence/industrial-policy-beyond-hegemons.md) · [[industrial-policy-beyond-hegemons]]
+- [Industrial policy beyond the hegemons — excluded](source_intelligence/industrial-policy-beyond-hegemons.md) · [[industrial-policy-beyond-hegemons]]
 - [Grabarczyk dissertation](source_intelligence/grabarczyk-dissertation.md) · [[grabarczyk-dissertation]]
 - [E_00 source dossier](source_intelligence/e00-i2-trap-snapshot.md) · [[e00-i2-trap-snapshot]]
 - [E_01 source dossier](source_intelligence/e01-i2-trap-snapshot.md) · [[e01-i2-trap-snapshot]]

@@ -1,7 +1,7 @@
 ---
 id: wagner-2023
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Wagner 2023", "CPR Residual Tests"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,38 @@ source_title: "Wagner2023.pdf"
 source_type: PDF
 related_audit_phases: [5]
 related_audit_questions: ["5.1", "5.2", "5.3"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Wagner (2023)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; direct scope verification completed, with human review
+> still required.
 
 ## Bibliographic identity
 
-Pending verification from the source.
+Wagner (2023), “Residual-based cointegration and non-cointegration tests for
+cointegrating polynomial regressions,” *Empirical Economics* 65, 1–31.
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Derives residual tests with cointegration and non-cointegration nulls for CPRs.
+- Shows how polynomial regressors alter the limiting projection functionals.
+- Provides simulated critical values for empirically relevant full designs.
 
 ## Critical insights for the I(2) validation
 
-Extract the exact residual-test statistic, scaling, null, and critical-value procedure.
+Standard linear critical values are invalid because the limit distribution
+changes; the source does not support automatic divergence to \(-\infty\).
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+Under the cointegration null, squared residual partial sums use \(T^{-2}\)
+scaling. Nuisance-free tabulation requires full design.
 
 ## Limitations and prohibited inferences
 
-Do not use approximate critical values from the project snapshot without source verification.
+The paper treats powers in the CPR basis, not the project's excluded
+cross-product case. Do not reuse its tables without matching the exact design.
 
 ## Audit links
 

@@ -1,7 +1,7 @@
 ---
 id: wagner-hong-2016
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Wagner Hong 2016", "Cointegrating Polynomial Regressions"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,39 @@ source_title: "WagnerHyunhong2016.pdf"
 source_type: PDF
 related_audit_phases: [1, 2, 4, 6]
 related_audit_questions: ["1.1", "1.2", "1.3", "2.1", "2.2", "4.1", "4.3", "6.1"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Wagner–Hong (2016)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; direct scope verification completed, with human review
+> still required.
 
 ## Bibliographic identity
 
-Pending verification from the source.
+Wagner and Hong (2016), CPR fully modified estimation and inference for
+integer powers of \(I(1)\) regressors.
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Extends Phillips–Hansen FM-OLS to cointegrating polynomial regressions.
+- Derives a zero-mean Gaussian-mixture estimator limit.
+- Gives scaled-rank conditions for Wald and LM restrictions.
 
 ## Critical insights for the I(2) validation
 
-Focus on CPR construction, normalization matrices, FM-OLS transformations, and coefficient rates.
+The paper's Remark 1 explicitly imposes additive separability and excludes
+cross-products of powers of distinct integrated regressors.
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+The innovation covariance must be nondegenerate, the normalized polynomial
+moment matrix must be full rank, and a scaled restriction must satisfy
+\(G_RRG\to R^*\) with full row rank.
 
 ## Limitations and prohibited inferences
 
-Distinguish results proved for powers of integrated regressors from unproved interaction-specific claims.
+This paper cannot validate the project's \(x_ty_t\) interaction, its asserted
+\(I(2)\) classification, or an interaction-specific IM-OLS transformation.
 
 ## Audit links
 

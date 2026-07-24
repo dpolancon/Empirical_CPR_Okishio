@@ -1,7 +1,7 @@
 ---
 id: saikkonen-1991
 type: source_intelligence
-status: awaiting_audit
+status: under_review
 reviewed: false
 aliases: ["Saikkonen 1991", "Dynamic OLS"]
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
@@ -10,31 +10,39 @@ source_title: "Saikkonen1991.pdf"
 source_type: PDF
 related_audit_phases: [2]
 related_audit_questions: ["2.1"]
-last_reviewed: null
+last_reviewed: 2026-07-23
 ---
 # Saikkonen (1991)
 
-> Awaiting audit. Do not cite this dossier as validated econometric evidence.
+> Curated audit draft; source-level human verification remains required.
 
 ## Bibliographic identity
 
-Pending verification from the source.
+Saikkonen (1991), time-domain efficient estimation of \(I(1)\) cointegrating
+regressions through dynamic augmentation.
 
 ## Main contributions
 
-Pending source-intelligence audit.
+- Augments the levels regression with leads and lags of stationary differences.
+- Orthogonalizes the cointegrating error from short-run regressor innovations.
+- Establishes mixed-normal estimation and chi-squared inference under its
+  \(I(1)\) assumptions.
 
 ## Critical insights for the I(2) validation
 
-Focus on dynamic augmentation assumptions and whether interaction differences create rank problems.
+The source does not establish asymptotic rank failure between levels and
+differences. Parameter proliferation can still create finite-sample variance
+and degrees-of-freedom problems.
 
 ## Formal results, assumptions, and rank conditions
 
-Pending source-intelligence audit.
+The stationary augmentation block must have a nonsingular covariance and the
+lead/lag truncation must satisfy the paper's growth conditions.
 
 ## Limitations and prohibited inferences
 
-Do not infer finite-sample multicollinearity claims from asymptotic DOLS theory without evidence.
+Do not claim that \(\Delta(x_ty_t)\) makes DOLS asymptotically singular without
+a cross-product-specific rank calculation.
 
 ## Audit links
 
