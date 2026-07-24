@@ -10,7 +10,7 @@ from pathlib import Path
 from run_audit import DEFAULT_MASTER_LEDGER, PHASE_LEDGER_NAMES, PHASE_TITLES
 
 
-SOURCE_INTELLIGENCE_FILENAME = "00_source_intelligence.md"
+SOURCE_INTELLIGENCE_FILENAME = "00-source-intelligence.md"
 
 SOURCE_INTELLIGENCE_PATTERN = re.compile(
     r"<!-- SOURCE_INTELLIGENCE_START -->\s*"
@@ -104,7 +104,8 @@ def build_argument_parser() -> argparse.ArgumentParser:
         type=Path,
         default=(
             repo_root
-            / "working_ledgers"
+            / "knowledge"
+            / "evidence"
             / "notebooklm"
             / DEFAULT_MASTER_LEDGER
         ),
@@ -112,7 +113,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output-directory",
         type=Path,
-        default=repo_root / "working_ledgers" / "notebooklm" / "views",
+        default=repo_root / "knowledge" / "evidence" / "notebooklm" / "views",
     )
     return parser
 

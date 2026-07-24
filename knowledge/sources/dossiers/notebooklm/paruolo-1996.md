@@ -1,16 +1,24 @@
 ---
-id: paruolo-1996
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "paruolo-1996"
+title: "Paruolo (1996)"
+type: "source-dossier"
+status: "under-review"
 aliases: ["Paruolo 1996", "Paurolo1996"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "paruolo-1996"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "6f93d684-3ba3-4684-a95d-84d256c22c9b"
+notebooklm_source_id: "6f93d684-3ba3-4684-a95d-84d256c22c9b"
 source_title: "Paurolo1996.pdf"
-source_type: PDF
-related_audit_phases: [1]
-related_audit_questions: ["1.1", "1.2"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["1.1", "1.2"]
 ---
 # Paruolo (1996)
 
@@ -50,5 +58,5 @@ Questions: `1.1`, `1.2`.
 
 ## Related notes
 
-- [The I(2) Trap](../../concepts/i2_trap.md) · [[i2_trap]]
-- [Polynomial Cointegration](../../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
+- [The I(2) Trap](../../../concepts/i2-trap.md) · [[i2-trap|The I(2) Trap]]
+- [Polynomial Cointegration](../../../concepts/polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

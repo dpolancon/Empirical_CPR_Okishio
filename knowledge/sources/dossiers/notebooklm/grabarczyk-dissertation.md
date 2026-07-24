@@ -1,16 +1,24 @@
 ---
-id: grabarczyk-dissertation
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "grabarczyk-dissertation"
+title: "Grabarczyk Dissertation"
+type: "source-dossier"
+status: "under-review"
 aliases: ["Grabarczyk Dissertation"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "doctoral-dissertation"
+citation_key: "grabarczyk-dissertation"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "c96685a6-db4f-40f2-975b-fe53312d9e03"
+notebooklm_source_id: "c96685a6-db4f-40f2-975b-fe53312d9e03"
 source_title: "Dissertation_Grabarczyk.pdf"
-source_type: PDF
-related_audit_phases: [1, 2, 3, 5]
-related_audit_questions: ["1.1", "1.2", "2.1", "2.2", "3.1", "5.2", "5.3"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["1.1", "1.2", "2.1", "2.2", "3.1", "5.2", "5.3"]
 ---
 # Grabarczyk Dissertation
 
@@ -53,5 +61,5 @@ Questions: `1.1`, `1.2`, `2.1`, `2.2`, `3.1`, `5.2`, `5.3`.
 
 ## Related notes
 
-- [Polynomial Cointegration](../../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
-- [CPR Cointegration Testing](../../concepts/cpr_cointegration_testing.md) · [[cpr_cointegration_testing]]
+- [Polynomial Cointegration](../../../concepts/polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]
+- [CPR Cointegration Testing](../../../concepts/cpr-cointegration-testing.md) · [[cpr-cointegration-testing|CPR Cointegration Testing]]

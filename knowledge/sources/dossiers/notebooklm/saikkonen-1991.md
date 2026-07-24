@@ -1,16 +1,24 @@
 ---
-id: saikkonen-1991
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "saikkonen-1991"
+title: "Saikkonen (1991)"
+type: "source-dossier"
+status: "under-review"
 aliases: ["Saikkonen 1991", "Dynamic OLS"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "saikkonen-1991"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "d6a5173a-8bb2-41dd-8dfd-2d34c6ce8eb0"
+notebooklm_source_id: "d6a5173a-8bb2-41dd-8dfd-2d34c6ce8eb0"
 source_title: "Saikkonen1991.pdf"
-source_type: PDF
-related_audit_phases: [2]
-related_audit_questions: ["2.1"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["2.1"]
 ---
 # Saikkonen (1991)
 
@@ -50,5 +58,5 @@ Question: `2.1`.
 
 ## Related notes
 
-- [Polynomial Cointegration](../../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
-- [The I(2) Trap](../../concepts/i2_trap.md) · [[i2_trap]]
+- [Polynomial Cointegration](../../../concepts/polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]
+- [The I(2) Trap](../../../concepts/i2-trap.md) · [[i2-trap|The I(2) Trap]]

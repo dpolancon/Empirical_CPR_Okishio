@@ -1,16 +1,24 @@
 ---
-id: wagner-hong-2016
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "wagner-hong-2016"
+title: "Wagner–Hong (2016)"
+type: "source-dossier"
+status: "under-review"
 aliases: ["Wagner Hong 2016", "Cointegrating Polynomial Regressions"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "wagner-hong-2016"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "ada0bbf7-27ab-4bde-a61a-510d978d2811"
+notebooklm_source_id: "ada0bbf7-27ab-4bde-a61a-510d978d2811"
 source_title: "WagnerHyunhong2016.pdf"
-source_type: PDF
-related_audit_phases: [1, 2, 4, 6]
-related_audit_questions: ["1.1", "1.2", "1.3", "2.1", "2.2", "4.1", "4.3", "6.1"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["1.1", "1.2", "1.3", "2.1", "2.2", "4.1", "4.3", "6.1"]
 ---
 # Wagner–Hong (2016)
 
@@ -50,5 +58,5 @@ Questions: `1.1`, `1.2`, `1.3`, `2.1`, `2.2`, `4.1`, `4.3`, `6.1`.
 
 ## Related notes
 
-- [Polynomial Cointegration](../../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
-- [The I(2) Trap](../../concepts/i2_trap.md) · [[i2_trap]]
+- [Polynomial Cointegration](../../../concepts/polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]
+- [The I(2) Trap](../../../concepts/i2-trap.md) · [[i2-trap|The I(2) Trap]]

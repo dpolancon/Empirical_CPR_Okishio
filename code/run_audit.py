@@ -20,19 +20,19 @@ SOURCE_INTELLIGENCE_QUERY = """Extract the 3 most critical contributions of this
 
 DEFAULT_NOTEBOOK_ID = "b0c5603e-e34a-4c97-b436-8577da5280eb"
 DEFAULT_NOTEBOOK_TITLE = "CPR Co-integration IM-OLS"
-DEFAULT_MASTER_LEDGER = "econometric_audit_master.md"
+DEFAULT_MASTER_LEDGER = "econometric-audit-master.md"
 DEFAULT_EXPECTED_SOURCE_COUNT = 14
 DEFAULT_EXCLUDED_SOURCES = (
     "e6c4625f-929b-4531-8256-9124deac419e",
 )
 
 PHASE_LEDGER_NAMES = {
-    1: "audit_phase_1_i2_trap.md",
-    2: "audit_phase_2_dols_fmols.md",
-    3: "audit_phase_3_im_ols.md",
-    4: "audit_phase_4_fwl_orthogonalization.md",
-    5: "audit_phase_5_cpr_cointegration_tests.md",
-    6: "audit_phase_6_delta_wald.md",
+    1: "audit-phase-01-i2-trap.md",
+    2: "audit-phase-02-dols-fmols.md",
+    3: "audit-phase-03-im-ols.md",
+    4: "audit-phase-04-fwl-orthogonalization.md",
+    5: "audit-phase-05-cpr-cointegration-tests.md",
+    6: "audit-phase-06-delta-wald.md",
 }
 
 PHASE_TITLES = {
@@ -173,7 +173,7 @@ partition_key: audit_phase
 | Ready notebook sources | {inventory_count} |
 | Source-intelligence threads | {source_count} |
 | Excluded from every query | {_table_cell(excluded_source_titles) or "None"} |
-| Source clusters | `cluster_1.csv` through `cluster_6.csv` |
+| Source clusters | `phase-01.csv` through `phase-06.csv` |
 | Partition contract | Stable HTML boundary markers around every phase and question |
 
 """
@@ -225,7 +225,7 @@ def _render_source_intelligence(
 
 
 def _phase_header(phase: int) -> str:
-    return f"""<!-- AUDIT_PHASE_START phase="{phase}" slug="{PHASE_SLUGS[phase]}" source="cluster_{phase}.csv" -->
+    return f"""<!-- AUDIT_PHASE_START phase="{phase}" slug="{PHASE_SLUGS[phase]}" source="phase-{phase:02d}.csv" -->
 ## Phase {phase} — {PHASE_TITLES[phase]}
 
 """
@@ -319,9 +319,13 @@ def _select_audit_sources(
 
 def run_audit(args: argparse.Namespace) -> None:
     repo_root = Path(__file__).resolve().parents[1]
-    cluster_directory = (args.cluster_directory or repo_root / "cluster_question_files").resolve()
+    cluster_directory = (
+        args.cluster_directory
+        or repo_root / "knowledge" / "evidence" / "notebooklm" / "questions"
+    ).resolve()
     ledger_directory = (
-        args.ledger_directory or repo_root / "working_ledgers" / "notebooklm"
+        args.ledger_directory
+        or repo_root / "knowledge" / "evidence" / "notebooklm"
     ).resolve()
     ledger_path = (
         args.ledger_file.resolve()
@@ -333,7 +337,7 @@ def run_audit(args: argparse.Namespace) -> None:
     ).resolve()
     notes_path = (
         args.notes
-        or repo_root / "notes" / "source_snapshots" / "i2_trap"
+        or repo_root / "knowledge" / "sources" / "snapshots" / "i2-trap"
     ).resolve()
     ledger_directory.mkdir(parents=True, exist_ok=True)
 
@@ -445,7 +449,7 @@ def run_audit(args: argparse.Namespace) -> None:
         _append_text(ledger_path, _source_intelligence_footer())
 
         for phase in range(1, 7):
-            questions = parse_cluster(cluster_directory / f"cluster_{phase}.csv")
+            questions = parse_cluster(cluster_directory / f"phase-{phase:02d}.csv")
             _append_text(ledger_path, _phase_header(phase))
 
             for question_index, question in enumerate(questions):
@@ -545,7 +549,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
         type=Path,
         help=(
             "Markdown note file or folder to upload. Defaults to the copied "
-            "notes/source_snapshots/i2_trap folder containing E_00 and E_01."
+            "knowledge/sources/snapshots/i2-trap folder containing E_00 and E_01."
         ),
     )
     parser.add_argument(
@@ -559,7 +563,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
         type=Path,
         help=(
             "Canonical Markdown output path. Defaults to "
-            f"working_ledgers/notebooklm/{DEFAULT_MASTER_LEDGER}."
+            f"knowledge/evidence/notebooklm/{DEFAULT_MASTER_LEDGER}."
         ),
     )
     parser.add_argument("--failure-log", type=Path)

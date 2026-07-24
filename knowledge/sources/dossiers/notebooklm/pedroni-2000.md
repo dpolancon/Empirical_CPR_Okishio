@@ -1,16 +1,24 @@
 ---
-id: pedroni-2000
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "pedroni-2000"
+title: "Pedroni (2000)"
+type: "source-dossier"
+status: "under-review"
 aliases: ["Pedroni 2000"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "pedroni-2000"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "9d86e85d-b9c0-4aec-b3a0-cbf9533b1155"
+notebooklm_source_id: "9d86e85d-b9c0-4aec-b3a0-cbf9533b1155"
 source_title: "Pedroni2000.pdf"
-source_type: PDF
-related_audit_phases: [2, 5]
-related_audit_questions: ["2.2", "5.1"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["2.2", "5.1"]
 ---
 # Pedroni (2000)
 
@@ -47,5 +55,5 @@ Questions: `2.2`, `5.1`.
 
 ## Related notes
 
-- [Polynomial Cointegration](../../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
-- [CPR Cointegration Testing](../../concepts/cpr_cointegration_testing.md) · [[cpr_cointegration_testing]]
+- [Polynomial Cointegration](../../../concepts/polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]
+- [CPR Cointegration Testing](../../../concepts/cpr-cointegration-testing.md) · [[cpr-cointegration-testing|CPR Cointegration Testing]]

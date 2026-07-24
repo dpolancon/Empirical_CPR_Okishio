@@ -1,16 +1,24 @@
 ---
-id: industrial-policy-beyond-hegemons
-type: source_intelligence
-status: excluded
-reviewed: false
+schema_version: 2
+id: "industrial-policy-beyond-hegemons"
+title: "Industrial Policy Beyond the Hegemons"
+type: "source-dossier"
+status: "excluded"
 aliases: ["Industrial Policy Beyond the Hegemons"]
+tags: ["excluded-source"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "not-applicable"
+citation_key: null
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "e6c4625f-929b-4531-8256-9124deac419e"
+notebooklm_source_id: "e6c4625f-929b-4531-8256-9124deac419e"
 source_title: "Bridging comparative and international political economy for the study of industrial policy beyond the hegemons — Introduction to special issue.pdf"
-source_type: PDF
-related_audit_phases: []
-related_audit_questions: []
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: []
 ---
 # Industrial Policy Beyond the Hegemons
 
@@ -45,4 +53,4 @@ No econometric audit question is assigned.
 
 ## Related notes
 
-- [Econometric Knowledge Index](../_index.md) · [[Econometric Knowledge Index]]
+- [Knowledge Index](../../../knowledge-index.md) · [[knowledge-index|Knowledge Index]]

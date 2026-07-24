@@ -1,16 +1,24 @@
 ---
-id: wagner-2023
-type: source_intelligence
-status: under_review
-reviewed: false
-aliases: ["Wagner 2023", "CPR Residual Tests"]
+schema_version: 2
+id: "wagner-2023"
+title: "Wagner (2023)"
+type: "source-dossier"
+status: "under-review"
+aliases: ["Wagner 2023", "Wagner 2023 CPR residual tests"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "wagner-2023"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "86a8d87b-e96b-4fe5-9a58-7e354e8bfe4b"
+notebooklm_source_id: "86a8d87b-e96b-4fe5-9a58-7e354e8bfe4b"
 source_title: "Wagner2023.pdf"
-source_type: PDF
-related_audit_phases: [5]
-related_audit_questions: ["5.1", "5.2", "5.3"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["5.1", "5.2", "5.3"]
 ---
 # Wagner (2023)
 
@@ -49,5 +57,5 @@ Questions: `5.1`, `5.2`, `5.3`.
 
 ## Related notes
 
-- [CPR Cointegration Testing](../../concepts/cpr_cointegration_testing.md) · [[cpr_cointegration_testing]]
-- [Polynomial Cointegration](../../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
+- [CPR Cointegration Testing](../../../concepts/cpr-cointegration-testing.md) · [[cpr-cointegration-testing|CPR Cointegration Testing]]
+- [Polynomial Cointegration](../../../concepts/polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

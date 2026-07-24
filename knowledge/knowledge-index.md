@@ -1,9 +1,15 @@
 ---
-id: econometric-knowledge-index
-type: knowledge_index
-status: active
-aliases: ["Econometric Knowledge Index", "I2 Audit Index"]
-last_reviewed: 2026-07-23
+schema_version: 2
+id: "knowledge-index"
+title: "Econometric Knowledge Index"
+type: "knowledge-index"
+status: "under-review"
+aliases: ["Econometric Knowledge Index", "econometric-knowledge-index", "I2 Audit Index"]
+tags: ["econometrics", "knowledge-graph"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+contains: ["source-index", "concept-index", "theory-index"]
 ---
 # Econometric Knowledge Index
 
@@ -13,54 +19,31 @@ claim, until it is promoted into a reviewed concept note.
 
 ## Lifecycle
 
-1. **Source snapshots:** immutable `E_00` and `E_01` copies plus their hash manifest.
-2. **Source intelligence:** 13 review-gated audit dossiers plus one explicitly
-   excluded out-of-scope source.
-3. **Audit evidence:** the append-only master ledger under `working_ledgers/notebooklm/`.
-4. **Canonical concepts:** atomic, human-reviewed econometric claims under `concepts/`.
+1. Immutable source snapshots and their hash manifest.
+2. Source dossiers separated into NotebookLM, local peer-reviewed, and excluded
+   collections.
+3. The append-only NotebookLM master ledger.
+4. Editable canonical concepts.
+5. Dependency-ordered theory tasks with proof and simulation evidence.
 
-## Review statuses
+The completed historical audit contains 13 source-intelligence responses and
+18 phase answers. All 18 proposed validation metrics failed, so the current
+concepts remain under review.
 
-| Status | Meaning |
-|---|---|
-| `awaiting_audit` | Structure exists, but NotebookLM evidence has not been reviewed. |
-| `under_review` | Evidence is being checked against the cited source. |
-| `validated` | The claim and its conditions have passed human review. |
-| `disputed` | Evidence conflicts or the claim is not supported. |
-| `excluded` | The source is outside the econometric audit corpus. |
+## Related indexes
 
-The completed NotebookLM run contains 13 source-intelligence responses and 18
-phase answers. All 18 proposed validation metrics failed, so the concept notes
-remain `under_review` rather than `validated`.
-
-## Related concept notes
-
-- [The I(2) Trap](../concepts/i2_trap.md) · [[i2_trap]]
-- [Polynomial Cointegration](../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
-- [IM-OLS Framework](../concepts/im_ols_framework.md) · [[im_ols_framework]]
-- [FWL Orthogonalization](../concepts/fwl_orthogonalization.md) · [[fwl_orthogonalization]]
-- [CPR Cointegration Testing](../concepts/cpr_cointegration_testing.md) · [[cpr_cointegration_testing]]
-- [State-Dependent Inference](../concepts/state_dependent_inference.md) · [[state_dependent_inference]]
+- [Source Index](sources/source-index.md) · [[source-index|Source Index]]
+- [Concept Index](concepts/concept-index.md) · [[concept-index|Concept Index]]
+- [Theory Index](theory/theory-index.md) · [[theory-index|Theory Index]]
 
 ## Related source snapshots
 
-- [E_00 I(2) Trap](source_snapshots/i2_trap/E_00_I2_Trap.md) · [[E_00_I2_Trap]]
-- [E_01 I(2) Trap](source_snapshots/i2_trap/E_01_I2_Trap.md) · [[E_01_I2_Trap]]
-- [Snapshot manifest](source_snapshots/i2_trap/manifest.json)
+- [E_00 I(2) Trap](sources/snapshots/i2-trap/e-00-i2-trap.md) · [[e-00-i2-trap|E_00 I(2) Trap]]
+- [E_01 I(2) Trap](sources/snapshots/i2-trap/e-01-i2-trap.md) · [[e-01-i2-trap|E_01 I(2) Trap]]
 
-## Related source intelligence
+## Related evidence
 
-- [Industrial policy beyond the hegemons — excluded](source_intelligence/industrial-policy-beyond-hegemons.md) · [[industrial-policy-beyond-hegemons]]
-- [Grabarczyk dissertation](source_intelligence/grabarczyk-dissertation.md) · [[grabarczyk-dissertation]]
-- [E_00 source dossier](source_intelligence/e00-i2-trap-snapshot.md) · [[e00-i2-trap-snapshot]]
-- [E_01 source dossier](source_intelligence/e01-i2-trap-snapshot.md) · [[e01-i2-trap-snapshot]]
-- [Engle–Granger (1987)](source_intelligence/engle-granger-1987.md) · [[engle-granger-1987]]
-- [Paruolo (1996)](source_intelligence/paruolo-1996.md) · [[paruolo-1996]]
-- [Pedroni (2000)](source_intelligence/pedroni-2000.md) · [[pedroni-2000]]
-- [Phillips–Hansen (1990)](source_intelligence/phillips-hansen-1990.md) · [[phillips-hansen-1990]]
-- [Saikkonen (1991)](source_intelligence/saikkonen-1991.md) · [[saikkonen-1991]]
-- [Stock–Watson (1993)](source_intelligence/stock-watson-1993.md) · [[stock-watson-1993]]
-- [Vogelsang–Wagner (2014)](source_intelligence/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
-- [Wagner (2023)](source_intelligence/wagner-2023.md) · [[wagner-2023]]
-- [Wagner–Hong (2016)](source_intelligence/wagner-hong-2016.md) · [[wagner-hong-2016]]
-- [de Jong–Wagner (2025)](source_intelligence/de-jong-wagner-2025.md) · [[de-jong-wagner-2025]]
+- [Canonical NotebookLM audit](evidence/notebooklm/econometric-audit-master.md)
+- [Snapshot manifest](sources/snapshots/i2-trap/manifest.json)
+- [Evidence manifest](_meta/evidence-manifest.json)
+- [Path migration map](_meta/path-migration.json)

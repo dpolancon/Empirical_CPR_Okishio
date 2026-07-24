@@ -1,12 +1,18 @@
 ---
-id: i2-trap
-type: canonical_concept
-status: under_review
+schema_version: 2
+id: "i2-trap"
+title: "The I(2) Trap"
+type: "concept"
+status: "under-review"
 aliases: ["I(2) Trap", "i2_trap"]
-source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
-audit_phases: [1]
+tags: ["econometrics", "cpr", "i2-trap-audit"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
+source_dossiers: ["paruolo-1996", "wagner-hong-2016"]
 audit_questions: ["1.1", "1.2", "1.3"]
-last_reviewed: 2026-07-23
+theory_tasks: ["t01-cross-product-limit", "t02-normalized-design-and-rates"]
 ---
 # The I(2) Trap
 
@@ -69,6 +75,6 @@ without proving that it applies to this interaction.
 
 ## Related notes
 
-- [Paruolo (1996)](../notes/source_intelligence/paruolo-1996.md) · [[paruolo-1996]]
-- [Wagner–Hong (2016)](../notes/source_intelligence/wagner-hong-2016.md) · [[wagner-hong-2016]]
-- [Polynomial Cointegration](polynomial_cointegration.md) · [[polynomial_cointegration]]
+- [Paruolo (1996)](../sources/dossiers/notebooklm/paruolo-1996.md) · [[paruolo-1996]]
+- [Wagner–Hong (2016)](../sources/dossiers/notebooklm/wagner-hong-2016.md) · [[wagner-hong-2016]]
+- [Polynomial Cointegration](polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

@@ -1,12 +1,18 @@
 ---
-id: im-ols-framework
-type: canonical_concept
-status: under_review
+schema_version: 2
+id: "im-ols-framework"
+title: "IM-OLS Framework"
+type: "concept"
+status: "under-review"
 aliases: ["IM-OLS Framework", "im_ols_framework", "Integrated Modified OLS"]
-source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
-audit_phases: [3]
+tags: ["econometrics", "cpr", "i2-trap-audit"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
+source_dossiers: ["vogelsang-wagner-2014", "de-jong-wagner-2025"]
 audit_questions: ["3.1", "3.2", "3.3"]
-last_reviewed: 2026-07-23
+theory_tasks: ["t03-estimator-extension"]
 ---
 # IM-OLS Framework
 
@@ -64,6 +70,6 @@ appropriate to the proven design.
 
 ## Related notes
 
-- [Vogelsang–Wagner (2014)](../notes/source_intelligence/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
-- [de Jong–Wagner (2025)](../notes/source_intelligence/de-jong-wagner-2025.md) · [[de-jong-wagner-2025]]
-- [Polynomial Cointegration](polynomial_cointegration.md) · [[polynomial_cointegration]]
+- [Vogelsang–Wagner (2014)](../sources/dossiers/notebooklm/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
+- [de Jong–Wagner (2025)](../sources/dossiers/notebooklm/de-jong-wagner-2025.md) · [[de-jong-wagner-2025]]
+- [Polynomial Cointegration](polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

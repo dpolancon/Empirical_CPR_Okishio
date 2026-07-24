@@ -1,16 +1,24 @@
 ---
-id: e01-i2-trap-snapshot
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "e01-i2-trap-snapshot"
+title: "E_01 I(2) Trap Source Dossier"
+type: "source-dossier"
+status: "under-review"
 aliases: ["E01 I2 Trap Source Dossier"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "project-note"
+citation_key: "e01-i2-trap-snapshot"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "0c9a6214-5241-4e81-bfab-2a1a343f702c"
+notebooklm_source_id: "0c9a6214-5241-4e81-bfab-2a1a343f702c"
 source_title: "E_01_I2_Trap.md"
-source_type: MARKDOWN
-related_audit_phases: [1, 2, 3, 4, 5, 6]
-related_audit_questions: ["1.1", "1.2", "1.3", "2.1", "2.2", "2.3", "3.1", "3.2", "3.3", "4.1", "4.2", "4.3", "5.1", "5.2", "5.3", "6.1", "6.2", "6.3"]
-last_reviewed: 2026-07-23
+source_type: "markdown"
+reviewed: false
+audit_questions: ["1.1", "1.2", "1.3", "2.1", "2.2", "2.3", "3.1", "3.2", "3.3", "4.1", "4.2", "4.3", "5.1", "5.2", "5.3", "6.1", "6.2", "6.3"]
 ---
 # E_01 I(2) Trap Source Dossier
 
@@ -18,7 +26,7 @@ last_reviewed: 2026-07-23
 
 ## Bibliographic identity
 
-Project framework snapshot preserved under `notes/source_snapshots/i2_trap/`.
+Project framework snapshot preserved under `knowledge/sources/snapshots/i2-trap/`.
 
 ## Main contributions
 
@@ -49,5 +57,5 @@ Questions: `1.1`–`6.3`.
 
 ## Related notes
 
-- [Immutable E_01 snapshot](../source_snapshots/i2_trap/E_01_I2_Trap.md) · [[E_01_I2_Trap]]
-- [The I(2) Trap](../../concepts/i2_trap.md) · [[i2_trap]]
+- [Immutable E_01 snapshot](../../snapshots/i2-trap/e-01-i2-trap.md) · [[e-01-i2-trap|E_01 I(2) Trap]]
+- [The I(2) Trap](../../../concepts/i2-trap.md) · [[i2-trap|The I(2) Trap]]

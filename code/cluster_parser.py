@@ -76,9 +76,9 @@ def _validate_records(
 
 
 def parse_all_clusters(cluster_directory: str | Path) -> list[dict[str, Any]]:
-    """Read cluster_1.csv through cluster_6.csv in numeric order."""
+    """Read phase-01.csv through phase-06.csv in numeric order."""
     directory = Path(cluster_directory).expanduser().resolve()
     questions: list[dict[str, Any]] = []
     for cluster_number in range(1, 7):
-        questions.extend(parse_cluster(directory / f"cluster_{cluster_number}.csv"))
+        questions.extend(parse_cluster(directory / f"phase-{cluster_number:02d}.csv"))
     return questions

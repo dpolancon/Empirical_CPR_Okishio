@@ -1,12 +1,18 @@
 ---
-id: polynomial-cointegration
-type: canonical_concept
-status: under_review
+schema_version: 2
+id: "polynomial-cointegration"
+title: "Polynomial Cointegration"
+type: "concept"
+status: "under-review"
 aliases: ["Polynomial Cointegration", "polynomial_cointegration", "CPR"]
-source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
-audit_phases: [1, 2]
+tags: ["econometrics", "cpr", "i2-trap-audit"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
+source_dossiers: ["wagner-hong-2016", "phillips-hansen-1990", "saikkonen-1991"]
 audit_questions: ["1.1", "1.2", "2.1", "2.2", "2.3"]
-last_reviewed: 2026-07-23
+theory_tasks: ["t01-cross-product-limit", "t02-normalized-design-and-rates", "t03-estimator-extension"]
 ---
 # Polynomial Cointegration
 
@@ -61,7 +67,7 @@ until its normalized moment limits and correction terms are derived.
 
 ## Related notes
 
-- [Wagner–Hong (2016)](../notes/source_intelligence/wagner-hong-2016.md) · [[wagner-hong-2016]]
-- [Phillips–Hansen (1990)](../notes/source_intelligence/phillips-hansen-1990.md) · [[phillips-hansen-1990]]
-- [Saikkonen (1991)](../notes/source_intelligence/saikkonen-1991.md) · [[saikkonen-1991]]
-- [The I(2) Trap](i2_trap.md) · [[i2_trap]]
+- [Wagner–Hong (2016)](../sources/dossiers/notebooklm/wagner-hong-2016.md) · [[wagner-hong-2016]]
+- [Phillips–Hansen (1990)](../sources/dossiers/notebooklm/phillips-hansen-1990.md) · [[phillips-hansen-1990]]
+- [Saikkonen (1991)](../sources/dossiers/notebooklm/saikkonen-1991.md) · [[saikkonen-1991]]
+- [The I(2) Trap](i2-trap.md) · [[i2-trap|The I(2) Trap]]

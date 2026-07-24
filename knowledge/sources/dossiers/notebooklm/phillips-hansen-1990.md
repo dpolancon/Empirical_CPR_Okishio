@@ -1,16 +1,24 @@
 ---
-id: phillips-hansen-1990
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "phillips-hansen-1990"
+title: "Phillips–Hansen (1990)"
+type: "source-dossier"
+status: "under-review"
 aliases: ["Phillips Hansen 1990", "FM-OLS"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "phillips-hansen-1990"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "3371fd51-9895-482e-b0be-60176877edd7"
+notebooklm_source_id: "3371fd51-9895-482e-b0be-60176877edd7"
 source_title: "PhillipsHansen1990.pdf"
-source_type: PDF
-related_audit_phases: [1, 2]
-related_audit_questions: ["1.3", "2.2", "2.3"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["1.3", "2.2", "2.3"]
 ---
 # Phillips–Hansen (1990)
 
@@ -48,5 +56,5 @@ Questions: `1.3`, `2.2`, `2.3`.
 
 ## Related notes
 
-- [Polynomial Cointegration](../../concepts/polynomial_cointegration.md) · [[polynomial_cointegration]]
-- [The I(2) Trap](../../concepts/i2_trap.md) · [[i2_trap]]
+- [Polynomial Cointegration](../../../concepts/polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]
+- [The I(2) Trap](../../../concepts/i2-trap.md) · [[i2-trap|The I(2) Trap]]

@@ -1,12 +1,18 @@
 ---
-id: cpr-cointegration-testing
-type: canonical_concept
-status: under_review
+schema_version: 2
+id: "cpr-cointegration-testing"
+title: "CPR Cointegration Testing"
+type: "concept"
+status: "under-review"
 aliases: ["CPR Cointegration Testing", "cpr_cointegration_testing", "CPR Residual Tests"]
-source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
-audit_phases: [5]
+tags: ["econometrics", "cpr", "i2-trap-audit"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
+source_dossiers: ["wagner-2023", "grabarczyk-dissertation"]
 audit_questions: ["5.1", "5.2", "5.3"]
-last_reviewed: 2026-07-23
+theory_tasks: ["t05-cpr-residual-testing"]
 ---
 # CPR Cointegration Testing
 
@@ -60,6 +66,6 @@ projection limit is established.
 
 ## Related notes
 
-- [Wagner (2023)](../notes/source_intelligence/wagner-2023.md) · [[wagner-2023]]
-- [Grabarczyk dissertation](../notes/source_intelligence/grabarczyk-dissertation.md) · [[grabarczyk-dissertation]]
-- [Polynomial Cointegration](polynomial_cointegration.md) · [[polynomial_cointegration]]
+- [Wagner (2023)](../sources/dossiers/notebooklm/wagner-2023.md) · [[wagner-2023]]
+- [Grabarczyk dissertation](../sources/dossiers/notebooklm/grabarczyk-dissertation.md) · [[grabarczyk-dissertation]]
+- [Polynomial Cointegration](polynomial-cointegration.md) · [[polynomial-cointegration|Polynomial Cointegration]]

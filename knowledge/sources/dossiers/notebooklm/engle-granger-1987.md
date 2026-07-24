@@ -1,16 +1,24 @@
 ---
-id: engle-granger-1987
-type: source_intelligence
-status: under_review
-reviewed: false
+schema_version: 2
+id: "engle-granger-1987"
+title: "Engle–Granger (1987)"
+type: "source-dossier"
+status: "under-review"
 aliases: ["Engle Granger 1987"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "engle-granger-1987"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "a632dafd-0b06-4e54-a0a5-d1e61958e35f"
+notebooklm_source_id: "a632dafd-0b06-4e54-a0a5-d1e61958e35f"
 source_title: "EngleGranger-CoIntegrationErrorCorrection-1987.pdf"
-source_type: PDF
-related_audit_phases: [1, 5]
-related_audit_questions: ["1.2", "5.1"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["1.2", "5.1"]
 ---
 # Engle–Granger (1987)
 
@@ -50,5 +58,5 @@ Questions: `1.2`, `5.1`.
 
 ## Related notes
 
-- [The I(2) Trap](../../concepts/i2_trap.md) · [[i2_trap]]
-- [CPR Cointegration Testing](../../concepts/cpr_cointegration_testing.md) · [[cpr_cointegration_testing]]
+- [The I(2) Trap](../../../concepts/i2-trap.md) · [[i2-trap|The I(2) Trap]]
+- [CPR Cointegration Testing](../../../concepts/cpr-cointegration-testing.md) · [[cpr-cointegration-testing|CPR Cointegration Testing]]

@@ -1,12 +1,18 @@
 ---
-id: fwl-orthogonalization
-type: canonical_concept
-status: under_review
+schema_version: 2
+id: "fwl-orthogonalization"
+title: "FWL Orthogonalization"
+type: "concept"
+status: "under-review"
 aliases: ["FWL Orthogonalization", "fwl_orthogonalization", "Orthogonalized Interaction"]
-source_snapshots: ["../notes/source_snapshots/i2_trap/E_00_I2_Trap.md", "../notes/source_snapshots/i2_trap/E_01_I2_Trap.md"]
-audit_phases: [4]
+tags: ["econometrics", "cpr", "i2-trap-audit"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_snapshots: ["e-00-i2-trap", "e-01-i2-trap"]
+source_dossiers: ["wagner-hong-2016", "vogelsang-wagner-2014"]
 audit_questions: ["4.1", "4.2", "4.3"]
-last_reviewed: 2026-07-23
+theory_tasks: ["t04-transformed-fwl"]
 ---
 # FWL Orthogonalization
 
@@ -60,6 +66,6 @@ interaction's stochastic order or inference is unchanged.
 
 ## Related notes
 
-- [Wagner–Hong (2016)](../notes/source_intelligence/wagner-hong-2016.md) · [[wagner-hong-2016]]
-- [Vogelsang–Wagner (2014)](../notes/source_intelligence/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
-- [IM-OLS Framework](im_ols_framework.md) · [[im_ols_framework]]
+- [Wagner–Hong (2016)](../sources/dossiers/notebooklm/wagner-hong-2016.md) · [[wagner-hong-2016]]
+- [Vogelsang–Wagner (2014)](../sources/dossiers/notebooklm/vogelsang-wagner-2014.md) · [[vogelsang-wagner-2014]]
+- [IM-OLS Framework](im-ols-framework.md) · [[im-ols-framework|IM-OLS Framework]]

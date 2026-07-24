@@ -1,4 +1,4 @@
-"""Validate note provenance, contracts, and dual-link navigation."""
+"""Validate provenance, schema-v2 contracts, graph integrity, and navigation."""
 
 from __future__ import annotations
 
@@ -6,23 +6,63 @@ import hashlib
 import json
 import re
 import sys
+import tempfile
 from pathlib import Path
 from urllib.parse import unquote
+
+import yaml
+
+from cluster_parser import parse_all_clusters
+from partition_audit_ledger import partition_ledger
 
 
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 WIKILINK_RE = re.compile(r"\[\[([^\]]+)\]\]")
-REQUIRED_CONCEPT_FIELDS = {
+ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+COMMON_FIELDS = {
+    "schema_version",
     "id",
+    "title",
     "type",
     "status",
     "aliases",
-    "source_snapshots",
-    "audit_phases",
-    "audit_questions",
+    "tags",
+    "created",
+    "updated",
     "last_reviewed",
 }
-REQUIRED_CONCEPT_SECTIONS = {
+TYPE_FIELDS = {
+    "concept": {
+        "source_snapshots",
+        "source_dossiers",
+        "audit_questions",
+        "theory_tasks",
+    },
+    "source-dossier": {
+        "source_channel",
+        "publication_status",
+        "citation_key",
+        "doi",
+        "notebooklm_source_id",
+        "reviewed",
+        "audit_questions",
+    },
+    "theory-task": {
+        "sequence",
+        "depends_on",
+        "resolves_concepts",
+        "source_dossiers",
+        "audit_questions",
+        "proof_status",
+        "simulation_status",
+        "outcome",
+    },
+    "knowledge-index": {"contains"},
+}
+KNOWLEDGE_STATUSES = {"under-review", "validated", "disputed", "excluded"}
+THEORY_STATUSES = {"open", "in-progress", "resolved", "blocked"}
+THEORY_OUTCOMES = {None, "proved", "refuted", "qualified"}
+CONCEPT_SECTIONS = {
     "Formal claim",
     "Assumptions and rank conditions",
     "Proof or theorem evidence",
@@ -32,191 +72,378 @@ REQUIRED_CONCEPT_SECTIONS = {
     "Unresolved questions",
     "Related notes",
 }
+THEORY_SECTIONS = {
+    "Formal setup",
+    "Assumptions",
+    "Lemmas",
+    "Derivation",
+    "Rank conditions",
+    "Degenerate cases",
+    "Peer-reviewed evidence",
+    "Simulation design",
+    "Results",
+    "Verdict",
+    "Concept-note implications",
+    "Remaining gaps",
+    "Related notes",
+}
+EXCLUDED_SOURCE_ID = "industrial-policy-beyond-hegemons"
 
 
-def _frontmatter(text: str, path: Path) -> str:
-    if not text.startswith("---\n"):
-        raise ValueError(f"{path}: missing YAML frontmatter")
-    end = text.find("\n---\n", 4)
-    if end < 0:
-        raise ValueError(f"{path}: unterminated YAML frontmatter")
-    return text[4:end]
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
 
-def _frontmatter_keys(frontmatter: str) -> set[str]:
-    return {
-        match.group(1)
-        for match in re.finditer(r"^([A-Za-z_][A-Za-z0-9_-]*):", frontmatter, re.MULTILINE)
-    }
-
-
-def _aliases(frontmatter: str, path: Path) -> list[str]:
-    match = re.search(r"^aliases:\s*(\[.*\])\s*$", frontmatter, re.MULTILINE)
+def _split_frontmatter(text: str, path: Path) -> tuple[dict, str]:
+    match = re.match(r"^---\r?\n(.*?)\r?\n---\r?\n(.*)$", text, re.DOTALL)
     if not match:
-        return []
-    try:
-        values = json.loads(match.group(1))
-    except json.JSONDecodeError as exc:
-        raise ValueError(f"{path}: aliases must be a JSON-compatible YAML list") from exc
-    return [str(value) for value in values]
+        raise ValueError(f"{path}: missing or unterminated YAML frontmatter")
+    data = yaml.safe_load(match.group(1))
+    if not isinstance(data, dict):
+        raise ValueError(f"{path}: YAML frontmatter must be a mapping")
+    return data, match.group(2)
 
 
-def _validate_snapshot_hashes(repo_root: Path) -> list[str]:
+def _editable_markdown_files(repo_root: Path) -> list[Path]:
+    knowledge = repo_root / "knowledge"
+    paths: list[Path] = []
+    for path in knowledge.rglob("*.md"):
+        relative = path.relative_to(knowledge)
+        if relative.parts[:2] in {
+            ("sources", "snapshots"),
+            ("evidence", "notebooklm"),
+        }:
+            continue
+        paths.append(path)
+    return sorted(paths)
+
+
+def _load_notes(paths: list[Path]) -> tuple[dict[str, tuple[Path, dict, str]], list[str]]:
+    notes: dict[str, tuple[Path, dict, str]] = {}
+    token_owner: dict[str, str] = {}
     errors: list[str] = []
-    snapshot_dir = repo_root / "notes" / "source_snapshots" / "i2_trap"
-    manifest_path = snapshot_dir / "manifest.json"
-    try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        return [f"{manifest_path}: cannot read snapshot manifest: {exc}"]
+    for path in paths:
+        try:
+            data, body = _split_frontmatter(path.read_text(encoding="utf-8"), path)
+        except (OSError, ValueError, yaml.YAMLError) as exc:
+            errors.append(str(exc))
+            continue
+        missing = COMMON_FIELDS - set(data)
+        note_type = data.get("type")
+        if note_type not in TYPE_FIELDS:
+            errors.append(f"{path}: unsupported type {note_type!r}")
+            required = set()
+        else:
+            required = TYPE_FIELDS[note_type]
+        missing.update(required - set(data))
+        if missing:
+            errors.append(f"{path}: missing fields: {sorted(missing)}")
 
-    if manifest.get("snapshot_policy") != "immutable":
-        errors.append(f"{manifest_path}: snapshot_policy must be 'immutable'")
-    for entry in manifest.get("files", []):
+        note_id = str(data.get("id", ""))
+        if not ID_RE.fullmatch(note_id):
+            errors.append(f"{path}: invalid kebab-case id {note_id!r}")
+        if path.stem != note_id:
+            errors.append(f"{path}: filename stem must equal id {note_id!r}")
+        if data.get("schema_version") != 2:
+            errors.append(f"{path}: schema_version must be numeric 2")
+        if note_id in notes:
+            errors.append(f"{path}: duplicate id {note_id}")
+        notes[note_id] = (path, data, body)
+
+        status = data.get("status")
+        allowed_statuses = THEORY_STATUSES if note_type == "theory-task" else KNOWLEDGE_STATUSES
+        if status not in allowed_statuses:
+            errors.append(f"{path}: invalid status {status!r} for {note_type}")
+
+        aliases = data.get("aliases")
+        if not isinstance(aliases, list):
+            errors.append(f"{path}: aliases must be a list")
+            aliases = []
+        for token in [note_id, *[str(alias) for alias in aliases]]:
+            folded = token.casefold()
+            owner = token_owner.get(folded)
+            if owner is not None and owner != note_id:
+                errors.append(
+                    f"{path}: id/alias {token!r} collides with note {owner!r}"
+                )
+            token_owner[folded] = note_id
+    return notes, errors
+
+
+def _validate_manifests(repo_root: Path) -> list[str]:
+    errors: list[str] = []
+    snapshot_dir = repo_root / "knowledge" / "sources" / "snapshots" / "i2-trap"
+    snapshot_manifest_path = snapshot_dir / "manifest.json"
+    evidence_manifest_path = repo_root / "knowledge" / "_meta" / "evidence-manifest.json"
+    migration_path = repo_root / "knowledge" / "_meta" / "path-migration.json"
+    try:
+        snapshot_manifest = json.loads(snapshot_manifest_path.read_text(encoding="utf-8"))
+        evidence_manifest = json.loads(evidence_manifest_path.read_text(encoding="utf-8"))
+        migration = json.loads(migration_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"Cannot read a provenance manifest: {exc}"]
+
+    if snapshot_manifest.get("snapshot_policy") != "immutable":
+        errors.append(f"{snapshot_manifest_path}: snapshot_policy must be immutable")
+    for entry in snapshot_manifest.get("files", []):
         path = snapshot_dir / str(entry.get("filename", ""))
         if not path.is_file():
             errors.append(f"{path}: snapshot is missing")
             continue
-        actual = hashlib.sha256(path.read_bytes()).hexdigest().upper()
-        expected = str(entry.get("sha256", "")).upper()
-        if actual != expected:
-            errors.append(f"{path}: SHA-256 mismatch; snapshot was modified")
-        if not entry.get("original_path") or not entry.get("notebooklm_source_id"):
-            errors.append(f"{manifest_path}: incomplete provenance for {path.name}")
+        if _sha256(path) != str(entry.get("sha256", "")).upper():
+            errors.append(f"{path}: SHA-256 mismatch")
+        required = {
+            "original_filename",
+            "original_path",
+            "previous_repository_path",
+            "repository_path",
+            "notebooklm_source_id",
+        }
+        if any(not entry.get(field) for field in required):
+            errors.append(f"{snapshot_manifest_path}: incomplete provenance for {path.name}")
+
+    for entry in evidence_manifest.get("artifacts", []):
+        path = repo_root / str(entry.get("repository_path", ""))
+        if not path.is_file():
+            errors.append(f"{path}: evidence artifact is missing")
+        elif _sha256(path) != str(entry.get("sha256", "")).upper():
+            errors.append(f"{path}: append-only evidence hash mismatch")
+
+    for old, new in migration.get("mappings", {}).items():
+        old_path = repo_root / old.rstrip("/")
+        new_path = repo_root / new.rstrip("/")
+        if old_path.exists():
+            errors.append(f"{old_path}: stale pre-migration path still exists")
+        if not new_path.exists():
+            errors.append(f"{new_path}: migration target is missing")
     return errors
 
 
-def _curated_markdown_files(repo_root: Path) -> list[Path]:
-    files = [repo_root / "notes" / "_index.md"]
-    files.extend(sorted((repo_root / "notes" / "source_intelligence").glob("*.md")))
-    files.extend(sorted((repo_root / "concepts").glob("*.md")))
-    return [path for path in files if path.is_file() and path.name != ".gitkeep"]
-
-
-def _validate_local_links(paths: list[Path]) -> list[str]:
+def _validate_graph(
+    repo_root: Path,
+    notes: dict[str, tuple[Path, dict, str]],
+) -> list[str]:
     errors: list[str] = []
-    target_names: set[str] = set()
-    text_by_path: dict[Path, str] = {}
+    question_dir = repo_root / "knowledge" / "evidence" / "notebooklm" / "questions"
+    valid_questions = {
+        str(question["id"]) for question in parse_all_clusters(question_dir)
+    }
+    snapshot_ids = {"e-00-i2-trap", "e-01-i2-trap"}
+    references = {
+        "source_snapshots": snapshot_ids,
+        "source_dossiers": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "source-dossier" and data.get("status") != "excluded"
+        },
+        "theory_tasks": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "theory-task"
+        },
+        "depends_on": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "theory-task"
+        },
+        "resolves_concepts": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "concept"
+        },
+    }
 
-    for path in paths:
-        text = path.read_text(encoding="utf-8")
-        text_by_path[path] = text
-        target_names.add(path.stem.casefold())
-        frontmatter = _frontmatter(text, path)
-        target_names.update(alias.casefold() for alias in _aliases(frontmatter, path))
+    for note_id, (path, data, body) in notes.items():
+        for field, allowed in references.items():
+            if field not in data:
+                continue
+            value = data[field]
+            if not isinstance(value, list):
+                errors.append(f"{path}: {field} must be a list")
+                continue
+            for target in value:
+                if target not in allowed:
+                    errors.append(f"{path}: unresolved or prohibited {field} id {target!r}")
+        if "audit_questions" in data:
+            questions = data["audit_questions"]
+            if not isinstance(questions, list):
+                errors.append(f"{path}: audit_questions must be a list")
+            for question in questions if isinstance(questions, list) else []:
+                if str(question) not in valid_questions:
+                    errors.append(f"{path}: unknown audit question {question!r}")
 
-    # Immutable snapshots are valid wikilink targets but are not curated here.
-    snapshot_dir = paths[0].parents[0] / "source_snapshots" / "i2_trap"
-    target_names.update(path.stem.casefold() for path in snapshot_dir.glob("*.md"))
+        note_type = data.get("type")
+        sections = set(re.findall(r"^## (.+)$", body, re.MULTILINE))
+        if note_type == "concept":
+            missing = CONCEPT_SECTIONS - sections
+            if missing:
+                errors.append(f"{path}: missing concept sections: {sorted(missing)}")
+            for field in ("source_dossiers", "audit_questions", "theory_tasks"):
+                if not data.get(field):
+                    errors.append(f"{path}: {field} must not be empty")
+            if data.get("status") == "validated":
+                for task_id in data.get("theory_tasks", []):
+                    task = notes.get(task_id)
+                    if task is None or task[1].get("status") != "resolved":
+                        errors.append(
+                            f"{path}: validated concept depends on unresolved task {task_id}"
+                        )
+        elif note_type == "theory-task":
+            missing = THEORY_SECTIONS - sections
+            if missing:
+                errors.append(f"{path}: missing theory sections: {sorted(missing)}")
+            if data.get("outcome") not in THEORY_OUTCOMES:
+                errors.append(f"{path}: invalid theory outcome {data.get('outcome')!r}")
+            if data.get("status") == "resolved" and (
+                data.get("proof_status") != "passed"
+                or data.get("simulation_status") != "passed"
+                or data.get("outcome") not in {"proved", "refuted", "qualified"}
+            ):
+                errors.append(f"{path}: resolved task has not passed all closure gates")
+        elif note_type == "source-dossier":
+            source_id = data.get("notebooklm_source_id")
+            if data.get("source_channel") == "notebooklm" and not source_id:
+                errors.append(f"{path}: NotebookLM dossier lacks notebooklm_source_id")
+            if data.get("status") == "excluded" and data.get("audit_questions"):
+                errors.append(f"{path}: excluded source must have no audit questions")
 
-    for path, text in text_by_path.items():
+        serialized = json.dumps(data, ensure_ascii=False)
+        if note_id != EXCLUDED_SOURCE_ID and EXCLUDED_SOURCE_ID in serialized:
+            errors.append(f"{path}: active metadata references excluded industrial source")
+
+    source_index = notes.get("source-index")
+    if source_index and EXCLUDED_SOURCE_ID in source_index[1].get("contains", []):
+        errors.append("source-index: industrial-policy source cannot be active")
+
+    # Dependency DAG cycle detection.
+    dependencies = {
+        note_id: list(data.get("depends_on", []))
+        for note_id, (_, data, _) in notes.items()
+        if data.get("type") == "theory-task"
+    }
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(node: str) -> None:
+        if node in visiting:
+            errors.append(f"Theory dependency cycle detected at {node}")
+            return
+        if node in visited:
+            return
+        visiting.add(node)
+        for dependency in dependencies.get(node, []):
+            visit(dependency)
+        visiting.remove(node)
+        visited.add(node)
+
+    for task_id in dependencies:
+        visit(task_id)
+    return errors
+
+
+def _validate_links(
+    notes: dict[str, tuple[Path, dict, str]],
+    repo_root: Path,
+) -> list[str]:
+    errors: list[str] = []
+    wiki_targets: dict[str, str] = {}
+    for note_id, (_, data, _) in notes.items():
+        wiki_targets[note_id.casefold()] = note_id
+        for alias in data.get("aliases", []):
+            wiki_targets[str(alias).casefold()] = note_id
+    for snapshot in ("e-00-i2-trap", "e-01-i2-trap"):
+        wiki_targets[snapshot] = snapshot
+
+    editable_paths = {path.resolve() for path, _, _ in notes.values()}
+    snapshot_paths = {
+        (repo_root / "knowledge" / "sources" / "snapshots" / "i2-trap" / f"{stem}.md").resolve()
+        for stem in ("e-00-i2-trap", "e-01-i2-trap")
+    }
+    note_paths = editable_paths | snapshot_paths
+
+    for path, _, body in notes.values():
         current_section = ""
-        for line_number, line in enumerate(text.splitlines(), start=1):
+        for line_number, line in enumerate(body.splitlines(), start=1):
             if line.startswith("## "):
                 current_section = line[3:].strip()
+            wikilinks = WIKILINK_RE.findall(line)
+            if wikilinks and not current_section.casefold().startswith("related"):
+                errors.append(
+                    f"{path}:{line_number}: wikilinks are allowed only in Related sections"
+                )
+            wiki_ids = {
+                item.split("|", 1)[0].split("#", 1)[0].strip().casefold()
+                for item in wikilinks
+            }
+            for target in wiki_ids:
+                if target not in wiki_targets:
+                    errors.append(f"{path}:{line_number}: unresolved wikilink [[{target}]]")
 
             for raw_target in MARKDOWN_LINK_RE.findall(line):
                 target = raw_target.strip().strip("<>")
-                if (
-                    not target
-                    or target.startswith(("#", "http://", "https://", "mailto:"))
-                ):
+                if not target or target.startswith(("#", "http://", "https://", "mailto:")):
                     continue
                 target = unquote(target.split("#", 1)[0])
                 resolved = (path.parent / target).resolve()
                 if not resolved.exists():
-                    errors.append(
-                        f"{path}:{line_number}: broken Markdown link: {raw_target}"
-                    )
-
-            wikilinks = WIKILINK_RE.findall(line)
-            if wikilinks and not current_section.lower().startswith("related"):
-                errors.append(
-                    f"{path}:{line_number}: wikilinks are allowed only in Related sections"
-                )
-            for raw_target in wikilinks:
-                target = raw_target.split("|", 1)[0].split("#", 1)[0].strip().casefold()
-                if target not in target_names:
-                    errors.append(
-                        f"{path}:{line_number}: unresolved wikilink: [[{raw_target}]]"
-                    )
-            if (
-                current_section.lower().startswith("related")
-                and ".md)" in line
-                and not wikilinks
-            ):
-                errors.append(
-                    f"{path}:{line_number}: related Markdown note link lacks a wikilink"
-                )
+                    errors.append(f"{path}:{line_number}: broken Markdown link {raw_target}")
+                    continue
+                if resolved in note_paths:
+                    expected = resolved.stem.casefold()
+                    if expected not in wiki_ids:
+                        errors.append(
+                            f"{path}:{line_number}: note link lacks matching wikilink [[{resolved.stem}]]"
+                        )
     return errors
 
 
-def _validate_concept_contracts(repo_root: Path) -> list[str]:
+def _validate_ledger_and_views(repo_root: Path) -> list[str]:
     errors: list[str] = []
-    concept_paths = sorted((repo_root / "concepts").glob("*.md"))
-    concept_paths = [path for path in concept_paths if path.name != ".gitkeep"]
-    if len(concept_paths) != 6:
-        errors.append(f"Expected 6 canonical concept notes; found {len(concept_paths)}")
+    master = (
+        repo_root
+        / "knowledge"
+        / "evidence"
+        / "notebooklm"
+        / "econometric-audit-master.md"
+    )
+    text = master.read_text(encoding="utf-8")
+    if not re.search(r"^status:\s*complete\s*$", text, re.MULTILINE):
+        errors.append(f"{master}: status is not complete")
+    source_count = len(re.findall(r"<!-- SOURCE_INTELLIGENCE_ITEM_START ", text))
+    question_count = len(re.findall(r"<!-- AUDIT_QUESTION_START ", text))
+    if source_count != 13:
+        errors.append(f"{master}: expected 13 source responses; found {source_count}")
+    if question_count != 18:
+        errors.append(f"{master}: expected 18 audit answers; found {question_count}")
+    if "**FAILED:**" in text:
+        errors.append(f"{master}: contains failed-query markers")
+    if EXCLUDED_SOURCE_ID in text:
+        errors.append(f"{master}: contains active industrial-policy source ID")
 
-    for path in concept_paths:
-        text = path.read_text(encoding="utf-8")
-        frontmatter = _frontmatter(text, path)
-        missing_fields = REQUIRED_CONCEPT_FIELDS - _frontmatter_keys(frontmatter)
-        if missing_fields:
-            errors.append(f"{path}: missing fields: {sorted(missing_fields)}")
-        audit_match = re.search(
-            r"^audit_questions:\s*\[(.*?)\]\s*$",
-            frontmatter,
-            re.MULTILINE,
-        )
-        if not audit_match or not audit_match.group(1).strip():
-            errors.append(f"{path}: audit_questions must contain at least one ID")
-        if "../notes/source_intelligence/" not in text:
-            errors.append(f"{path}: must cite at least one source-intelligence note")
+    with tempfile.TemporaryDirectory(prefix="cpr-audit-views-") as temporary:
+        written = partition_ledger(master, Path(temporary))
+        if len(written) != 7 or len(list(Path(temporary).glob("*.md"))) != 7:
+            errors.append("Master ledger did not regenerate exactly seven views")
 
-        sections = {
-            match.group(1).strip()
-            for match in re.finditer(r"^## (.+)$", text, re.MULTILINE)
-        }
-        missing_sections = REQUIRED_CONCEPT_SECTIONS - sections
-        if missing_sections:
-            errors.append(f"{path}: missing sections: {sorted(missing_sections)}")
-    return errors
-
-
-def _validate_source_inventory(repo_root: Path) -> list[str]:
-    paths = sorted((repo_root / "notes" / "source_intelligence").glob("*.md"))
-    errors: list[str] = []
-    if len(paths) != 14:
-        errors.append(f"Expected 14 source-intelligence dossiers; found {len(paths)}")
-
-    source_ids: set[str] = set()
-    for path in paths:
-        text = path.read_text(encoding="utf-8")
-        frontmatter = _frontmatter(text, path)
-        match = re.search(
-            r'^notebook_source_id:\s*"([^"]+)"\s*$',
-            frontmatter,
-            re.MULTILINE,
-        )
-        if not match:
-            errors.append(f"{path}: missing notebook_source_id")
-            continue
-        source_id = match.group(1)
-        if source_id in source_ids:
-            errors.append(f"{path}: duplicate notebook_source_id {source_id}")
-        source_ids.add(source_id)
+    gitignore = (repo_root / ".gitignore").read_text(encoding="utf-8")
+    for ignored in (
+        "/knowledge/evidence/notebooklm/views/",
+        "/knowledge/evidence/notebooklm/attempts/",
+        "/knowledge/theory/results/raw/",
+    ):
+        if ignored not in gitignore:
+            errors.append(f".gitignore: missing {ignored}")
     return errors
 
 
 def validate_repository(repo_root: Path) -> list[str]:
     repo_root = repo_root.resolve()
-    curated_paths = _curated_markdown_files(repo_root)
-    errors: list[str] = []
-    errors.extend(_validate_snapshot_hashes(repo_root))
-    errors.extend(_validate_source_inventory(repo_root))
-    errors.extend(_validate_concept_contracts(repo_root))
-    errors.extend(_validate_local_links(curated_paths))
+    paths = _editable_markdown_files(repo_root)
+    notes, errors = _load_notes(paths)
+    errors.extend(_validate_manifests(repo_root))
+    errors.extend(_validate_graph(repo_root, notes))
+    errors.extend(_validate_links(notes, repo_root))
+    errors.extend(_validate_ledger_and_views(repo_root))
     return errors
 
 
@@ -227,7 +454,7 @@ def main() -> None:
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         raise SystemExit(1)
-    print("Note repository validation passed.")
+    print("Knowledge repository validation passed.")
 
 
 if __name__ == "__main__":

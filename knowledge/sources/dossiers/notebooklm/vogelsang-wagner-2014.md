@@ -1,16 +1,24 @@
 ---
-id: vogelsang-wagner-2014
-type: source_intelligence
-status: under_review
-reviewed: false
-aliases: ["Vogelsang Wagner 2014", "IM-OLS"]
+schema_version: 2
+id: "vogelsang-wagner-2014"
+title: "Vogelsang–Wagner (2014)"
+type: "source-dossier"
+status: "under-review"
+aliases: ["Vogelsang Wagner 2014", "Vogelsang-Wagner linear IM-OLS"]
+tags: ["econometrics", "source-intelligence"]
+created: "2026-07-23"
+updated: "2026-07-23"
+last_reviewed: "2026-07-23"
+source_channel: "notebooklm"
+publication_status: "peer-reviewed"
+citation_key: "vogelsang-wagner-2014"
+doi: null
 notebook_id: "b0c5603e-e34a-4c97-b436-8577da5280eb"
-notebook_source_id: "8c9b16c5-e8d2-4872-88ce-c427c4d4edfb"
+notebooklm_source_id: "8c9b16c5-e8d2-4872-88ce-c427c4d4edfb"
 source_title: "VogelsanWagner2014.pdf"
-source_type: PDF
-related_audit_phases: [3, 4, 6]
-related_audit_questions: ["3.1", "3.2", "3.3", "4.2", "6.1", "6.3"]
-last_reviewed: 2026-07-23
+source_type: "pdf"
+reviewed: false
+audit_questions: ["3.1", "3.2", "3.3", "4.2", "6.1", "6.3"]
 ---
 # Vogelsang–Wagner (2014)
 
@@ -50,5 +58,5 @@ Questions: `3.1`, `3.2`, `3.3`, `4.2`, `6.1`, `6.3`.
 
 ## Related notes
 
-- [IM-OLS Framework](../../concepts/im_ols_framework.md) · [[im_ols_framework]]
-- [State-Dependent Inference](../../concepts/state_dependent_inference.md) · [[state_dependent_inference]]
+- [IM-OLS Framework](../../../concepts/im-ols-framework.md) · [[im-ols-framework|IM-OLS Framework]]
+- [State-Dependent Inference](../../../concepts/state-dependent-inference.md) · [[state-dependent-inference|State-Dependent Inference]]
