@@ -1,0 +1,73 @@
+estimator,scenario,coefficient,metric,window,sample_sizes,estimated_slope,ci_low,ci_high,theoretical_slope,absolute_error,passes_tolerance
+levels-OLS,exogenous-error,interaction,rmse,primary,250 500 1000,-1.4671506220328223,-1.512572640232839,-1.4151578233606141,-1.5,0.032849377967177684,True
+levels-OLS,exogenous-error,interaction,rmse,full-grid,50 100 250 500 1000,-1.3680401676015108,,,-1.5,0.13195983239848919,True
+levels-OLS,exogenous-error,interaction,rmse,adjacent-local,50 100,-1.343319686571093,,,-1.5,0.15668031342890698,False
+levels-OLS,exogenous-error,interaction,rmse,adjacent-local,100 250,-1.2817728589263937,,,-1.5,0.2182271410736063,False
+levels-OLS,exogenous-error,interaction,rmse,adjacent-local,250 500,-1.3843600011546873,,,-1.5,0.11563999884531273,True
+levels-OLS,exogenous-error,interaction,rmse,adjacent-local,500 1000,-1.5499412429109516,,,-1.5,0.04994124291095159,True
+levels-OLS,exogenous-error,interaction,mse,primary,250 500 1000,-2.934301244065644,-3.0280611585677137,-2.839896224113525,-3.0,0.06569875593435581,True
+levels-OLS,exogenous-error,interaction,mse,full-grid,50 100 250 500 1000,-2.736080335203022,,,-3.0,0.2639196647969779,False
+levels-OLS,exogenous-error,interaction,mse,adjacent-local,50 100,-2.686639373142186,,,-3.0,0.31336062685781396,False
+levels-OLS,exogenous-error,interaction,mse,adjacent-local,100 250,-2.5635457178527874,,,-3.0,0.4364542821472126,False
+levels-OLS,exogenous-error,interaction,mse,adjacent-local,250 500,-2.768720002309371,,,-3.0,0.231279997690629,False
+levels-OLS,exogenous-error,interaction,mse,adjacent-local,500 1000,-3.0998824858219054,,,-3.0,0.0998824858219054,True
+levels-OLS,severe-endogeneity,interaction,rmse,primary,250 500 1000,-1.3351360616495485,-1.3898882051521346,-1.2802471053774784,-1.5,0.16486393835045154,False
+levels-OLS,severe-endogeneity,interaction,rmse,full-grid,50 100 250 500 1000,-1.1888532951996784,,,-1.5,0.3111467048003216,False
+levels-OLS,severe-endogeneity,interaction,rmse,adjacent-local,50 100,-1.1137298996332765,,,-1.5,0.3862701003667235,False
+levels-OLS,severe-endogeneity,interaction,rmse,adjacent-local,100 250,-1.0673570982791858,,,-1.5,0.4326429017208142,False
+levels-OLS,severe-endogeneity,interaction,rmse,adjacent-local,250 500,-1.2648877957672173,,,-1.5,0.23511220423278267,False
+levels-OLS,severe-endogeneity,interaction,rmse,adjacent-local,500 1000,-1.4053843275318758,,,-1.5,0.09461567246812419,True
+levels-OLS,severe-endogeneity,interaction,mse,primary,250 500 1000,-2.670272123299097,-2.7837021277745704,-2.56781218382379,-3.0,0.3297278767009031,False
+levels-OLS,severe-endogeneity,interaction,mse,full-grid,50 100 250 500 1000,-2.377706590399357,,,-3.0,0.6222934096006432,False
+levels-OLS,severe-endogeneity,interaction,mse,adjacent-local,50 100,-2.227459799266553,,,-3.0,0.772540200733447,False
+levels-OLS,severe-endogeneity,interaction,mse,adjacent-local,100 250,-2.1347141965583716,,,-3.0,0.8652858034416284,False
+levels-OLS,severe-endogeneity,interaction,mse,adjacent-local,250 500,-2.5297755915344347,,,-3.0,0.47022440846556535,False
+levels-OLS,severe-endogeneity,interaction,mse,adjacent-local,500 1000,-2.8107686550637516,,,-3.0,0.18923134493624838,False
+cumulative-OLS-diagnostic,exogenous-error,interaction,rmse,primary,250 500 1000,-1.6444693641286985,-1.7625665804790978,-1.518586807285069,-1.5,0.14446936412869849,True
+cumulative-OLS-diagnostic,exogenous-error,interaction,rmse,full-grid,50 100 250 500 1000,-1.4401219829944667,,,-1.5,0.0598780170055333,True
+cumulative-OLS-diagnostic,exogenous-error,interaction,rmse,adjacent-local,50 100,-1.4225735252867968,,,-1.5,0.07742647471320319,True
+cumulative-OLS-diagnostic,exogenous-error,interaction,rmse,adjacent-local,100 250,-1.1958679373660739,,,-1.5,0.3041320626339261,False
+cumulative-OLS-diagnostic,exogenous-error,interaction,rmse,adjacent-local,250 500,-1.6721115236004598,,,-1.5,0.17211152360045978,False
+cumulative-OLS-diagnostic,exogenous-error,interaction,rmse,adjacent-local,500 1000,-1.6168272046569312,,,-1.5,0.1168272046569312,True
+cumulative-OLS-diagnostic,exogenous-error,interaction,mse,primary,250 500 1000,-3.288938728257397,-3.523553542253227,-3.05256893780418,-3.0,0.28893872825739697,False
+cumulative-OLS-diagnostic,exogenous-error,interaction,mse,full-grid,50 100 250 500 1000,-2.8802439659889334,,,-3.0,0.1197560340110666,True
+cumulative-OLS-diagnostic,exogenous-error,interaction,mse,adjacent-local,50 100,-2.8451470505735936,,,-3.0,0.15485294942640637,False
+cumulative-OLS-diagnostic,exogenous-error,interaction,mse,adjacent-local,100 250,-2.3917358747321478,,,-3.0,0.6082641252678522,False
+cumulative-OLS-diagnostic,exogenous-error,interaction,mse,adjacent-local,250 500,-3.3442230472009196,,,-3.0,0.34422304720091956,False
+cumulative-OLS-diagnostic,exogenous-error,interaction,mse,adjacent-local,500 1000,-3.2336544093138624,,,-3.0,0.2336544093138624,False
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,rmse,primary,250 500 1000,-1.5623222496578157,-1.6448089902306953,-1.484212654771994,-1.5,0.06232224965781574,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,rmse,full-grid,50 100 250 500 1000,-1.4594225994851835,,,-1.5,0.04057740051481651,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,rmse,adjacent-local,50 100,-1.4669315535956142,,,-1.5,0.033068446404385776,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,rmse,adjacent-local,100 250,-1.3288752408088969,,,-1.5,0.17112475919110315,False
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,rmse,adjacent-local,250 500,-1.5744348373985821,,,-1.5,0.07443483739858214,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,rmse,adjacent-local,500 1000,-1.5502096619170433,,,-1.5,0.05020966191704335,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,mse,primary,250 500 1000,-3.1246444993156315,-3.300172457104546,-2.963891236594519,-3.0,0.12464449931563149,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,mse,full-grid,50 100 250 500 1000,-2.918845198970367,,,-3.0,0.08115480102963302,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,mse,adjacent-local,50 100,-2.933863107191227,,,-3.0,0.06613689280877288,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,mse,adjacent-local,100 250,-2.657750481617794,,,-3.0,0.34224951838220585,False
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,mse,adjacent-local,250 500,-3.1488696747971643,,,-3.0,0.1488696747971643,True
+cumulative-OLS-diagnostic,severe-endogeneity,interaction,mse,adjacent-local,500 1000,-3.1004193238340867,,,-3.0,0.1004193238340867,True
+augmented-cross-product-IM-OLS,exogenous-error,interaction,rmse,primary,250 500 1000,-1.6374794944808382,-1.7604193011068145,-1.5088902752465276,-1.5,0.13747949448083818,True
+augmented-cross-product-IM-OLS,exogenous-error,interaction,rmse,full-grid,50 100 250 500 1000,-1.4687720023916737,,,-1.5,0.031227997608326286,True
+augmented-cross-product-IM-OLS,exogenous-error,interaction,rmse,adjacent-local,50 100,-1.4721993587888969,,,-1.5,0.02780064121110315,True
+augmented-cross-product-IM-OLS,exogenous-error,interaction,rmse,adjacent-local,100 250,-1.2718454764158242,,,-1.5,0.22815452358417576,False
+augmented-cross-product-IM-OLS,exogenous-error,interaction,rmse,adjacent-local,250 500,-1.6067435459786,,,-1.5,0.10674354597859992,True
+augmented-cross-product-IM-OLS,exogenous-error,interaction,rmse,adjacent-local,500 1000,-1.668215442983071,,,-1.5,0.1682154429830709,False
+augmented-cross-product-IM-OLS,exogenous-error,interaction,mse,primary,250 500 1000,-3.2749589889616755,-3.5341320638472156,-3.018407226970013,-3.0,0.2749589889616755,False
+augmented-cross-product-IM-OLS,exogenous-error,interaction,mse,full-grid,50 100 250 500 1000,-2.937544004783347,,,-3.0,0.062455995216653015,True
+augmented-cross-product-IM-OLS,exogenous-error,interaction,mse,adjacent-local,50 100,-2.9443987175777937,,,-3.0,0.0556012824222063,True
+augmented-cross-product-IM-OLS,exogenous-error,interaction,mse,adjacent-local,100 250,-2.5436909528316485,,,-3.0,0.4563090471683515,False
+augmented-cross-product-IM-OLS,exogenous-error,interaction,mse,adjacent-local,250 500,-3.2134870919572,,,-3.0,0.21348709195719984,False
+augmented-cross-product-IM-OLS,exogenous-error,interaction,mse,adjacent-local,500 1000,-3.336430885966143,,,-3.0,0.3364308859661431,False
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,rmse,primary,250 500 1000,-1.6415668166221782,-1.7723249592759436,-1.5138670961979546,-1.5,0.14156681662217818,True
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,rmse,full-grid,50 100 250 500 1000,-1.4890099345427024,,,-1.5,0.010990065457297638,True
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,rmse,adjacent-local,50 100,-1.553391110889092,,,-1.5,0.0533911108890921,True
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,rmse,adjacent-local,100 250,-1.2824020552601898,,,-1.5,0.2175979447398102,False
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,rmse,adjacent-local,250 500,-1.6078623181373193,,,-1.5,0.10786231813731928,True
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,rmse,adjacent-local,500 1000,-1.6752713151070306,,,-1.5,0.17527131510703065,False
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,mse,primary,250 500 1000,-3.2831336332443564,-3.5347689680119774,-3.0232740952448633,-3.0,0.28313363324435636,False
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,mse,full-grid,50 100 250 500 1000,-2.9780198690854047,,,-3.0,0.021980130914595275,True
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,mse,adjacent-local,50 100,-3.106782221778184,,,-3.0,0.1067822217781842,True
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,mse,adjacent-local,100 250,-2.5648041105203796,,,-3.0,0.4351958894796204,False
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,mse,adjacent-local,250 500,-3.2157246362746386,,,-3.0,0.21572463627463856,False
+augmented-cross-product-IM-OLS,severe-endogeneity,interaction,mse,adjacent-local,500 1000,-3.3505426302140613,,,-3.0,0.3505426302140613,False
