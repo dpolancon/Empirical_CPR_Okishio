@@ -1,0 +1,10 @@
+sample_size,method,null,replications,rejection_rate,monte_carlo_se
+40,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.336,0.02987333258945175
+50,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.304,0.029091854530091405
+60,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.324,0.02959891889917603
+80,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.308,0.029198356118110485
+100,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.244,0.02716350492848815
+120,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.324,0.02959891889917603
+200,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.236,0.026855464993181557
+500,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.24,0.027011108825814614
+1000,fixed-b-wald,"uniform-gap-zero: b=1,d=-1",250,0.24,0.027011108825814614

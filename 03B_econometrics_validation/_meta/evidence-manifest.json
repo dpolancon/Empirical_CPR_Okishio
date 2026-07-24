@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "policy": "append-only",
+  "artifacts": [
+    {
+      "id": "econometric-audit-master",
+      "previous_repository_path": "working_ledgers/notebooklm/econometric_audit_master.md",
+      "repository_path": "03B_econometrics_validation/evidence/notebooklm/econometric-audit-master.md",
+      "sha256": "004B46C84D2906306F22517C3E5F9E068FE7539BDFCAA37E9D02F3A4D70EB7A9",
+      "status": "complete",
+      "source_intelligence_responses": 13,
+      "audit_phase_answers": 18,
+      "excluded_notebooklm_source_ids": [
+        "e6c4625f-929b-4531-8256-9124deac419e"
+      ]
+    }
+  ]
+}

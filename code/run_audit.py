@@ -21,6 +21,7 @@ SOURCE_INTELLIGENCE_QUERY = """Extract the 3 most critical contributions of this
 DEFAULT_NOTEBOOK_ID = "b0c5603e-e34a-4c97-b436-8577da5280eb"
 DEFAULT_NOTEBOOK_TITLE = "CPR Co-integration IM-OLS"
 DEFAULT_MASTER_LEDGER = "econometric-audit-master.md"
+VAULT_DIRECTORY = "03B_econometrics_validation"
 DEFAULT_EXPECTED_SOURCE_COUNT = 14
 DEFAULT_EXCLUDED_SOURCES = (
     "e6c4625f-929b-4531-8256-9124deac419e",
@@ -321,11 +322,11 @@ def run_audit(args: argparse.Namespace) -> None:
     repo_root = Path(__file__).resolve().parents[1]
     cluster_directory = (
         args.cluster_directory
-        or repo_root / "knowledge" / "evidence" / "notebooklm" / "questions"
+        or repo_root / VAULT_DIRECTORY / "evidence" / "notebooklm" / "questions"
     ).resolve()
     ledger_directory = (
         args.ledger_directory
-        or repo_root / "knowledge" / "evidence" / "notebooklm"
+        or repo_root / VAULT_DIRECTORY / "evidence" / "notebooklm"
     ).resolve()
     ledger_path = (
         args.ledger_file.resolve()
@@ -337,7 +338,7 @@ def run_audit(args: argparse.Namespace) -> None:
     ).resolve()
     notes_path = (
         args.notes
-        or repo_root / "knowledge" / "sources" / "snapshots" / "i2-trap"
+        or repo_root / VAULT_DIRECTORY / "sources" / "snapshots" / "i2-trap"
     ).resolve()
     ledger_directory.mkdir(parents=True, exist_ok=True)
 
@@ -549,7 +550,8 @@ def build_argument_parser() -> argparse.ArgumentParser:
         type=Path,
         help=(
             "Markdown note file or folder to upload. Defaults to the copied "
-            "knowledge/sources/snapshots/i2-trap folder containing E_00 and E_01."
+            "03B_econometrics_validation/sources/snapshots/i2-trap folder "
+            "containing E_00 and E_01."
         ),
     )
     parser.add_argument(
@@ -563,7 +565,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
         type=Path,
         help=(
             "Canonical Markdown output path. Defaults to "
-            f"knowledge/evidence/notebooklm/{DEFAULT_MASTER_LEDGER}."
+            f"03B_econometrics_validation/evidence/notebooklm/{DEFAULT_MASTER_LEDGER}."
         ),
     )
     parser.add_argument("--failure-log", type=Path)

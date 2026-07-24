@@ -1,0 +1,11 @@
+method,sample_size,replications,q90,q95,q99,scope
+fixed-b-limit,limit,5000,0.482800628997559,0.7080203556705783,1.3870654825709925,
+moving-block-bootstrap,40,250,0.7574099618973679,1.156271500064731,1.830567581059632,distribution of sample-specific 5% critical values
+moving-block-bootstrap,50,250,0.7266372606291269,1.1043456221994998,1.6967886942542785,distribution of sample-specific 5% critical values
+moving-block-bootstrap,60,250,0.6876574481160161,1.046980703606873,1.4948033534445173,distribution of sample-specific 5% critical values
+moving-block-bootstrap,80,250,0.7049642703097836,1.0660977266623477,1.5520054739812068,distribution of sample-specific 5% critical values
+moving-block-bootstrap,100,250,0.6413439052414359,0.9428949424737657,1.3508114120562622,distribution of sample-specific 5% critical values
+moving-block-bootstrap,120,250,0.6404419657242144,0.9573942726723581,1.3782003258370792,distribution of sample-specific 5% critical values
+moving-block-bootstrap,200,250,0.643680224485761,0.9150652618649424,1.331618630961674,distribution of sample-specific 5% critical values
+moving-block-bootstrap,500,250,0.657536034611109,0.9018928198202374,1.2626261730449415,distribution of sample-specific 5% critical values
+moving-block-bootstrap,1000,250,0.666785055742922,0.8980948451170705,1.2426279857555824,distribution of sample-specific 5% critical values

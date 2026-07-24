@@ -1,0 +1,29 @@
+{
+  "schema_version": 2,
+  "migrated_at": "2026-07-24",
+  "mappings": {
+    "notes/_index.md": "03B_econometrics_validation/knowledge-index.md",
+    "notes/source_snapshots/i2_trap/E_00_I2_Trap.md": "03B_econometrics_validation/sources/snapshots/i2-trap/e-00-i2-trap.md",
+    "notes/source_snapshots/i2_trap/E_01_I2_Trap.md": "03B_econometrics_validation/sources/snapshots/i2-trap/e-01-i2-trap.md",
+    "notes/source_snapshots/i2_trap/manifest.json": "03B_econometrics_validation/sources/snapshots/i2-trap/manifest.json",
+    "notes/source_intelligence/": "03B_econometrics_validation/sources/dossiers/notebooklm/",
+    "notes/source_intelligence/industrial-policy-beyond-hegemons.md": "03B_econometrics_validation/sources/dossiers/excluded/industrial-policy-beyond-hegemons.md",
+    "concepts/cpr_cointegration_testing.md": "03B_econometrics_validation/concepts/cpr-cointegration-testing.md",
+    "concepts/fwl_orthogonalization.md": "03B_econometrics_validation/concepts/fwl-orthogonalization.md",
+    "concepts/i2_trap.md": "03B_econometrics_validation/concepts/i2-trap.md",
+    "concepts/im_ols_framework.md": "03B_econometrics_validation/concepts/im-ols-framework.md",
+    "concepts/polynomial_cointegration.md": "03B_econometrics_validation/concepts/polynomial-cointegration.md",
+    "concepts/state_dependent_inference.md": "03B_econometrics_validation/concepts/state-dependent-inference.md",
+    "cluster_question_files/cluster_1.csv": "03B_econometrics_validation/evidence/notebooklm/questions/phase-01.csv",
+    "cluster_question_files/cluster_2.csv": "03B_econometrics_validation/evidence/notebooklm/questions/phase-02.csv",
+    "cluster_question_files/cluster_3.csv": "03B_econometrics_validation/evidence/notebooklm/questions/phase-03.csv",
+    "cluster_question_files/cluster_4.csv": "03B_econometrics_validation/evidence/notebooklm/questions/phase-04.csv",
+    "cluster_question_files/cluster_5.csv": "03B_econometrics_validation/evidence/notebooklm/questions/phase-05.csv",
+    "cluster_question_files/cluster_6.csv": "03B_econometrics_validation/evidence/notebooklm/questions/phase-06.csv",
+    "working_ledgers/notebooklm/econometric_audit_master.md": "03B_econometrics_validation/evidence/notebooklm/econometric-audit-master.md",
+    "working_ledgers/notebooklm/views/": "03B_econometrics_validation/evidence/notebooklm/views/",
+    "working_ledgers/notebooklm/attempts/": "03B_econometrics_validation/evidence/notebooklm/attempts/",
+    "bridges/": "03B_econometrics_validation/bridges/",
+    "knowledge/": "03B_econometrics_validation/"
+  }
+}

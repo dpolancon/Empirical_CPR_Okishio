@@ -1,0 +1,10 @@
+sample_size,regime,replications,i1_rank_gate_pass_rate,theta_rmse_under_unsupported_transform,status,gap_state_derivative
+40,estimated-stationary-state,100,1.0,0.21930500822257262,diagnostic-only; no operational inference,-(1+d)
+50,estimated-stationary-state,100,1.0,0.15546434486491295,diagnostic-only; no operational inference,-(1+d)
+60,estimated-stationary-state,100,1.0,0.15968789048927412,diagnostic-only; no operational inference,-(1+d)
+80,estimated-stationary-state,100,1.0,0.11273957717211129,diagnostic-only; no operational inference,-(1+d)
+100,estimated-stationary-state,100,1.0,0.06841113362077873,diagnostic-only; no operational inference,-(1+d)
+120,estimated-stationary-state,100,1.0,0.08027491844251965,diagnostic-only; no operational inference,-(1+d)
+200,estimated-stationary-state,100,1.0,0.0540374543675058,diagnostic-only; no operational inference,-(1+d)
+500,estimated-stationary-state,100,1.0,0.017362856513457783,diagnostic-only; no operational inference,-(1+d)
+1000,estimated-stationary-state,100,1.0,0.010245297504347797,diagnostic-only; no operational inference,-(1+d)

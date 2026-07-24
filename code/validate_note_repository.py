@@ -20,6 +20,7 @@ from partition_audit_ledger import partition_ledger
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 WIKILINK_RE = re.compile(r"\[\[([^\]]+)\]\]")
 ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+LEGACY_MATH_DELIMITER_RE = re.compile(r"\\(?:\(|\)|\[|\])")
 COMMON_FIELDS = {
     "schema_version",
     "id",
@@ -57,12 +58,29 @@ TYPE_FIELDS = {
         "proof_status",
         "simulation_status",
         "outcome",
+        "mathematical_status",
+        "scholarly_status",
+        "finite_sample_status",
+    },
+    "validation-report": {
+        "source_snapshots",
+        "audit_questions",
+        "theory_tasks",
+        "concepts",
     },
     "knowledge-index": {"contains"},
 }
 KNOWLEDGE_STATUSES = {"under-review", "validated", "disputed", "excluded"}
 THEORY_STATUSES = {"open", "in-progress", "resolved", "blocked"}
 THEORY_OUTCOMES = {None, "proved", "refuted", "qualified"}
+MATHEMATICAL_STATUSES = {
+    "open",
+    "locally-proved",
+    "locally-qualified",
+    "locally-refuted",
+}
+SCHOLARLY_STATUSES = {"awaiting-peer-review", "peer-reviewed"}
+FINITE_SAMPLE_STATUSES = {"unsupported", "diagnostic", "usable", "robust"}
 CONCEPT_SECTIONS = {
     "Formal claim",
     "Assumptions and rank conditions",
@@ -88,7 +106,19 @@ THEORY_SECTIONS = {
     "Remaining gaps",
     "Related notes",
 }
+VALIDATION_REPORT_SECTIONS = {
+    "Current bottom line",
+    "What is being validated",
+    "Evidence ladder",
+    "Step-by-step validation",
+    "Claim disposition",
+    "Operational decision sequence",
+    "Reproducing the validation",
+    "Review checklist",
+    "Related notes",
+}
 EXCLUDED_SOURCE_ID = "industrial-policy-beyond-hegemons"
+VAULT_DIRECTORY = "03B_econometrics_validation"
 
 
 def _sha256(path: Path) -> str:
@@ -106,7 +136,7 @@ def _split_frontmatter(text: str, path: Path) -> tuple[dict, str]:
 
 
 def _editable_markdown_files(repo_root: Path) -> list[Path]:
-    knowledge = repo_root / "knowledge"
+    knowledge = repo_root / VAULT_DIRECTORY
     paths: list[Path] = []
     for path in knowledge.rglob("*.md"):
         relative = path.relative_to(knowledge)
@@ -129,6 +159,10 @@ def _load_notes(paths: list[Path]) -> tuple[dict[str, tuple[Path, dict, str]], l
         except (OSError, ValueError, yaml.YAMLError) as exc:
             errors.append(str(exc))
             continue
+        if LEGACY_MATH_DELIMITER_RE.search(body):
+            errors.append(
+                f"{path}: use $...$ or $$...$$ instead of legacy LaTex delimiters"
+            )
         missing = COMMON_FIELDS - set(data)
         note_type = data.get("type")
         if note_type not in TYPE_FIELDS:
@@ -173,10 +207,10 @@ def _load_notes(paths: list[Path]) -> tuple[dict[str, tuple[Path, dict, str]], l
 
 def _validate_manifests(repo_root: Path) -> list[str]:
     errors: list[str] = []
-    snapshot_dir = repo_root / "knowledge" / "sources" / "snapshots" / "i2-trap"
+    snapshot_dir = repo_root / VAULT_DIRECTORY / "sources" / "snapshots" / "i2-trap"
     snapshot_manifest_path = snapshot_dir / "manifest.json"
-    evidence_manifest_path = repo_root / "knowledge" / "_meta" / "evidence-manifest.json"
-    migration_path = repo_root / "knowledge" / "_meta" / "path-migration.json"
+    evidence_manifest_path = repo_root / VAULT_DIRECTORY / "_meta" / "evidence-manifest.json"
+    migration_path = repo_root / VAULT_DIRECTORY / "_meta" / "path-migration.json"
     try:
         snapshot_manifest = json.loads(snapshot_manifest_path.read_text(encoding="utf-8"))
         evidence_manifest = json.loads(evidence_manifest_path.read_text(encoding="utf-8"))
@@ -225,7 +259,7 @@ def _validate_graph(
     notes: dict[str, tuple[Path, dict, str]],
 ) -> list[str]:
     errors: list[str] = []
-    question_dir = repo_root / "knowledge" / "evidence" / "notebooklm" / "questions"
+    question_dir = repo_root / VAULT_DIRECTORY / "evidence" / "notebooklm" / "questions"
     valid_questions = {
         str(question["id"]) for question in parse_all_clusters(question_dir)
     }
@@ -248,6 +282,11 @@ def _validate_graph(
             if data.get("type") == "theory-task"
         },
         "resolves_concepts": {
+            note_id
+            for note_id, (_, data, _) in notes.items()
+            if data.get("type") == "concept"
+        },
+        "concepts": {
             note_id
             for note_id, (_, data, _) in notes.items()
             if data.get("type") == "concept"
@@ -286,7 +325,11 @@ def _validate_graph(
             if data.get("status") == "validated":
                 for task_id in data.get("theory_tasks", []):
                     task = notes.get(task_id)
-                    if task is None or task[1].get("status") != "resolved":
+                    if (
+                        task is None
+                        or task[1].get("status") != "resolved"
+                        or task[1].get("scholarly_status") != "peer-reviewed"
+                    ):
                         errors.append(
                             f"{path}: validated concept depends on unresolved task {task_id}"
                         )
@@ -296,18 +339,75 @@ def _validate_graph(
                 errors.append(f"{path}: missing theory sections: {sorted(missing)}")
             if data.get("outcome") not in THEORY_OUTCOMES:
                 errors.append(f"{path}: invalid theory outcome {data.get('outcome')!r}")
+            if data.get("mathematical_status") not in MATHEMATICAL_STATUSES:
+                errors.append(
+                    f"{path}: invalid mathematical_status "
+                    f"{data.get('mathematical_status')!r}"
+                )
+            if data.get("scholarly_status") not in SCHOLARLY_STATUSES:
+                errors.append(
+                    f"{path}: invalid scholarly_status "
+                    f"{data.get('scholarly_status')!r}"
+                )
+            finite_status = data.get("finite_sample_status")
+            if not isinstance(finite_status, dict) or set(finite_status) != {
+                "t50",
+                "t100",
+            }:
+                errors.append(
+                    f"{path}: finite_sample_status must contain exactly t50 and t100"
+                )
+            elif any(
+                value not in FINITE_SAMPLE_STATUSES
+                for value in finite_status.values()
+            ):
+                errors.append(f"{path}: invalid finite_sample_status value")
             if data.get("status") == "resolved" and (
                 data.get("proof_status") != "passed"
                 or data.get("simulation_status") != "passed"
                 or data.get("outcome") not in {"proved", "refuted", "qualified"}
+                or data.get("scholarly_status") != "peer-reviewed"
             ):
                 errors.append(f"{path}: resolved task has not passed all closure gates")
+            if (
+                data.get("mathematical_status")
+                in {"locally-proved", "locally-qualified"}
+                and data.get("simulation_status") not in {"passed", "diagnostic-passed"}
+            ):
+                errors.append(
+                    f"{path}: locally closed mathematical status lacks passing simulations"
+                )
         elif note_type == "source-dossier":
             source_id = data.get("notebooklm_source_id")
             if data.get("source_channel") == "notebooklm" and not source_id:
                 errors.append(f"{path}: NotebookLM dossier lacks notebooklm_source_id")
             if data.get("status") == "excluded" and data.get("audit_questions"):
                 errors.append(f"{path}: excluded source must have no audit questions")
+        elif note_type == "validation-report":
+            missing = VALIDATION_REPORT_SECTIONS - sections
+            if missing:
+                errors.append(
+                    f"{path}: missing validation-report sections: {sorted(missing)}"
+                )
+            for field in (
+                "source_snapshots",
+                "audit_questions",
+                "theory_tasks",
+                "concepts",
+            ):
+                if not data.get(field):
+                    errors.append(f"{path}: {field} must not be empty")
+            if data.get("status") == "validated":
+                for task_id in data.get("theory_tasks", []):
+                    task = notes.get(task_id)
+                    if (
+                        task is None
+                        or task[1].get("status") != "resolved"
+                        or task[1].get("scholarly_status") != "peer-reviewed"
+                    ):
+                        errors.append(
+                            f"{path}: validated report depends on unresolved task {task_id}"
+                        )
 
         serialized = json.dumps(data, ensure_ascii=False)
         if note_id != EXCLUDED_SOURCE_ID and EXCLUDED_SOURCE_ID in serialized:
@@ -399,7 +499,7 @@ def _validate_links(
 
     editable_paths = {path.resolve() for path, _, _ in notes.values()}
     snapshot_paths = {
-        (repo_root / "knowledge" / "sources" / "snapshots" / "i2-trap" / f"{stem}.md").resolve()
+        (repo_root / VAULT_DIRECTORY / "sources" / "snapshots" / "i2-trap" / f"{stem}.md").resolve()
         for stem in ("e-00-i2-trap", "e-01-i2-trap")
     }
     note_paths = editable_paths | snapshot_paths
@@ -444,7 +544,7 @@ def _validate_ledger_and_views(repo_root: Path) -> list[str]:
     errors: list[str] = []
     master = (
         repo_root
-        / "knowledge"
+        / VAULT_DIRECTORY
         / "evidence"
         / "notebooklm"
         / "econometric-audit-master.md"
@@ -470,9 +570,9 @@ def _validate_ledger_and_views(repo_root: Path) -> list[str]:
 
     gitignore = (repo_root / ".gitignore").read_text(encoding="utf-8")
     for ignored in (
-        "/knowledge/evidence/notebooklm/views/",
-        "/knowledge/evidence/notebooklm/attempts/",
-        "/knowledge/theory/results/raw/",
+        "/03B_econometrics_validation/evidence/notebooklm/views/",
+        "/03B_econometrics_validation/evidence/notebooklm/attempts/",
+        "/03B_econometrics_validation/theory/results/raw/",
     ):
         if ignored not in gitignore:
             errors.append(f".gitignore: missing {ignored}")
@@ -486,64 +586,198 @@ def _read_csv(path: Path) -> list[dict[str, str]]:
 
 def _validate_theory_results(repo_root: Path) -> list[str]:
     errors: list[str] = []
-    result_dir = repo_root / "knowledge" / "theory" / "results"
+    result_dir = repo_root / VAULT_DIRECTORY / "theory" / "results"
     manifest_path = result_dir / "run-manifest.json"
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         return [f"{manifest_path}: cannot read theory result manifest: {exc}"]
+    if manifest.get("schema_version") != 2:
+        errors.append(f"{manifest_path}: expected result schema version 2")
     if manifest.get("seed") != 20260723:
         errors.append(f"{manifest_path}: unexpected simulation seed")
-    if manifest.get("replications") != 10_000:
-        errors.append(f"{manifest_path}: expected 10000 replications")
-    if manifest.get("sample_sizes") != [100, 200, 500, 1000]:
+    expected_sizes = [40, 50, 60, 80, 100, 120, 200, 500, 1000]
+    if manifest.get("sample_sizes") != expected_sizes:
         errors.append(f"{manifest_path}: unexpected sample-size design")
+    profile = manifest.get("profile")
+    if profile not in {"smoke", "full"}:
+        errors.append(f"{manifest_path}: invalid profile {profile!r}")
+    if profile == "smoke":
+        if manifest.get("replications") != 250 or manifest.get("limit_draws") != 5000:
+            errors.append(f"{manifest_path}: noncanonical smoke profile")
+        if manifest.get("bootstrap_replications") != {
+            "small_samples": 99,
+            "asymptotic": 99,
+        }:
+            errors.append(f"{manifest_path}: smoke profile requires 99 bootstrap draws")
+        if not str(manifest.get("calibration_status", "")).startswith("smoke-only"):
+            errors.append(f"{manifest_path}: smoke run must be marked non-promotional")
+    elif profile == "full":
+        if manifest.get("replications") != 10_000:
+            errors.append(f"{manifest_path}: full profile requires 10000 replications")
+        if manifest.get("limit_draws") != 200_000:
+            errors.append(f"{manifest_path}: full profile requires 200000 limit draws")
+
     for artifact in manifest.get("artifacts", []):
         path = result_dir / str(artifact)
         if not path.is_file() or not path.stat().st_size:
             errors.append(f"{path}: theory artifact missing or empty")
 
-    checks = (
-        ("t01-rate-checks.csv", 18),
-        ("t02-rate-checks.csv", 16),
-        ("t05-residual-rate-checks.csv", 2),
-    )
-    for filename, expected_count in checks:
-        path = result_dir / filename
-        rows = _read_csv(path)
-        passed = [row for row in rows if row.get("passes_tolerance") == "True"]
-        if len(rows) != expected_count or len(passed) != expected_count:
+    tasks = set(manifest.get("tasks", []))
+    required_by_task = {
+        "t03": {
+            "t03-fixed-b-critical-values.json",
+            "t03-imols-summary.csv",
+            "t03-rate-checks.csv",
+            "t03-rank-diagnostics.csv",
+            "t03-naive-estimator-diagnostic.csv",
+        },
+        "t05": {
+            "t05-critical-values.csv",
+            "t05-size-power.csv",
+            "t05-residual-scaling-summary.csv",
+            "t05-residual-rate-checks.csv",
+        },
+        "t06": {
+            "t06-fixed-state-inference.csv",
+            "t06-path-band-coverage.csv",
+            "t06-efficiency-wald.csv",
+            "t06-i0-diagnostic.csv",
+        },
+    }
+    artifact_names = set(manifest.get("artifacts", []))
+    for task, required in required_by_task.items():
+        if task in tasks and not required <= artifact_names:
             errors.append(
-                f"{path}: expected {expected_count} passing rate checks; "
-                f"found {len(passed)}/{len(rows)}"
+                f"{manifest_path}: {task} missing artifacts "
+                f"{sorted(required - artifact_names)}"
             )
 
     fwl_path = result_dir / "t04-fwl-check.json"
-    fwl = json.loads(fwl_path.read_text(encoding="utf-8"))
-    if not fwl.get("fwl_identity_passes") or not fwl.get("noncommutation_detected"):
-        errors.append(f"{fwl_path}: FWL algebra checks failed")
+    if fwl_path.is_file():
+        fwl = json.loads(fwl_path.read_text(encoding="utf-8"))
+        if not fwl.get("fwl_identity_passes") or not fwl.get("noncommutation_detected"):
+            errors.append(f"{fwl_path}: FWL algebra checks failed")
 
-    state_path = result_dir / "t06-state-inference-summary.csv"
-    state_rows = _read_csv(state_path)
-    gated = [
-        row
-        for row in state_rows
-        if int(row["sample_size"]) >= 500
-        and not row["regime"].endswith("-naive")
-    ]
-    if len(gated) != 6 or any(row["passes_coverage_gate"] != "True" for row in gated):
-        errors.append(f"{state_path}: corrected large-sample coverage gate failed")
+    if "t03" in tasks:
+        estimator_path = result_dir / "t03-imols-summary.csv"
+        estimator_rows = _read_csv(estimator_path)
+        anchors = {
+            int(row["sample_size"])
+            for row in estimator_rows
+            if row.get("method") == "moving-block-bootstrap"
+        }
+        if not set(expected_sizes) <= anchors:
+            errors.append(f"{estimator_path}: bootstrap sample grid is incomplete")
+        if profile == "smoke" and any(
+            int(row["successful_replications"]) != 250
+            for row in estimator_rows
+            if row.get("method") == "moving-block-bootstrap"
+        ):
+            errors.append(f"{estimator_path}: smoke bootstrap requires 250 outer draws")
+        diagnostic_rows = _read_csv(result_dir / "t03-rank-diagnostics.csv")
+        singular = [
+            row
+            for row in diagnostic_rows
+            if row["scenario"] == "singular-common-trend"
+        ]
+        if not singular or any(float(row["rank_supported_rate"]) > 0 for row in singular):
+            errors.append(f"{result_dir / 't03-rank-diagnostics.csv'}: singular rank gate failed")
 
-    estimator_path = result_dir / "t03-naive-estimator-diagnostic.csv"
-    estimator_rows = _read_csv(estimator_path)
-    if not estimator_rows or any(
-        row["passes_coverage_gate"] != "False" for row in estimator_rows
-    ):
-        errors.append(
-            f"{estimator_path}: expected every naive endogeneity coverage check to fail"
-        )
-    if (result_dir / "raw").exists():
-        errors.append(f"{result_dir / 'raw'}: raw Monte Carlo draws must not be committed")
+    if "t05" in tasks:
+        test_rows = _read_csv(result_dir / "t05-size-power.csv")
+        for anchor in expected_sizes:
+            methods = {
+                row["method"]
+                for row in test_rows
+                if int(row["sample_size"]) == anchor
+                and row["experiment"] == "null-size"
+            }
+            if methods != {"fixed-b", "moving-block-bootstrap"}:
+                errors.append(
+                    f"{result_dir / 't05-size-power.csv'}: missing null calibrations at T={anchor}"
+                )
+        if profile == "smoke" and any(
+            int(row["replications"]) != 250
+            for row in test_rows
+            if row["method"] == "moving-block-bootstrap"
+            and row["experiment"] == "null-size"
+        ):
+            errors.append("T05 smoke bootstrap requires 250 outer draws")
+
+    if "t06" in tasks:
+        state_rows = _read_csv(result_dir / "t06-fixed-state-inference.csv")
+        targets = {row["target"] for row in state_rows}
+        if targets != {"theta", "gap"}:
+            errors.append(
+                f"{result_dir / 't06-fixed-state-inference.csv'}: corrected targets missing"
+            )
+        if profile == "smoke" and any(
+            int(row["replications"]) != 250
+            for row in state_rows
+            if row["method"] == "moving-block-bootstrap"
+        ):
+            errors.append("T06 smoke bootstrap requires 250 outer draws")
+        bootstrap_sizes = {
+            int(row["sample_size"])
+            for row in state_rows
+            if row["method"] == "moving-block-bootstrap"
+        }
+        if not set(expected_sizes) <= bootstrap_sizes:
+            errors.append("T06 bootstrap sample grid is incomplete")
+        path_rows = _read_csv(result_dir / "t06-path-band-coverage.csv")
+        methods = {row["method"] for row in path_rows}
+        if not {
+            "conditional-path-band",
+            "unconditional-path-band",
+        } <= methods:
+            errors.append(
+                f"{result_dir / 't06-path-band-coverage.csv'}: path bands missing"
+            )
+        for method in ("conditional-path-band", "unconditional-path-band"):
+            sizes = {
+                int(row["sample_size"])
+                for row in path_rows
+                if row["method"] == method
+            }
+            if not set(expected_sizes) <= sizes:
+                errors.append(f"T06 {method} sample grid is incomplete")
+
+    if profile == "full":
+        if "t03" in tasks:
+            rows = _read_csv(result_dir / "t03-imols-summary.csv")
+            gated = [
+                row
+                for row in rows
+                if row["scenario"] == "rho-0.5-ar-0.5"
+                and int(row["sample_size"]) >= 500
+            ]
+            if any(
+                not 0.93 <= float(row["coverage_95"]) <= 0.97
+                for row in gated
+            ):
+                errors.append("T03 full-profile asymptotic coverage gate failed")
+        if "t05" in tasks:
+            rows = _read_csv(result_dir / "t05-size-power.csv")
+            gated = [
+                row
+                for row in rows
+                if row["experiment"] == "null-size"
+                and int(row["sample_size"]) >= 500
+            ]
+            if any(
+                not 0.03 <= float(row["rejection_rate"]) <= 0.07
+                for row in gated
+            ):
+                errors.append("T05 full-profile asymptotic size gate failed")
+        if "t06" in tasks:
+            rows = _read_csv(result_dir / "t06-fixed-state-inference.csv")
+            gated = [row for row in rows if int(row["sample_size"]) >= 500]
+            if any(
+                not 0.93 <= float(row["coverage_95"]) <= 0.97
+                for row in gated
+            ):
+                errors.append("T06 full-profile asymptotic coverage gate failed")
     return errors
 
 

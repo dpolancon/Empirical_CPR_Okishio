@@ -7,7 +7,12 @@ import re
 from datetime import datetime
 from pathlib import Path
 
-from run_audit import DEFAULT_MASTER_LEDGER, PHASE_LEDGER_NAMES, PHASE_TITLES
+from run_audit import (
+    DEFAULT_MASTER_LEDGER,
+    PHASE_LEDGER_NAMES,
+    PHASE_TITLES,
+    VAULT_DIRECTORY,
+)
 
 
 SOURCE_INTELLIGENCE_FILENAME = "00-source-intelligence.md"
@@ -104,7 +109,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
         type=Path,
         default=(
             repo_root
-            / "knowledge"
+            / VAULT_DIRECTORY
             / "evidence"
             / "notebooklm"
             / DEFAULT_MASTER_LEDGER
@@ -113,7 +118,7 @@ def build_argument_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--output-directory",
         type=Path,
-        default=repo_root / "knowledge" / "evidence" / "notebooklm" / "views",
+        default=repo_root / VAULT_DIRECTORY / "evidence" / "notebooklm" / "views",
     )
     return parser
 

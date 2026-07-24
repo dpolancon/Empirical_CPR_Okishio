@@ -1,0 +1,3 @@
+process,estimated_exponent,theoretical_exponent,absolute_error,passes_tolerance,scope
+stationary-residual,2.095977207136136,2.0,0.09597720713613578,True,"oracle scaling check using T=200,500,1000"
+unit-root-residual,3.8337563862626913,4.0,0.16624361373730867,False,"oracle scaling check using T=200,500,1000"

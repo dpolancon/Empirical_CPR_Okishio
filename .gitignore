@@ -1,14 +1,17 @@
 # Rebuildable views generated from the canonical NotebookLM audit ledger.
-/knowledge/evidence/notebooklm/views/
+/03B_econometrics_validation/evidence/notebooklm/views/
 
 # Preserved failed or contaminated live-run evidence; never canonical.
-/knowledge/evidence/notebooklm/attempts/
+/03B_econometrics_validation/evidence/notebooklm/attempts/
 
 # Locally acquired papers and non-redistributable source files.
 /literature/library/
 
 # Raw Monte Carlo draws are intentionally disposable.
-/knowledge/theory/results/raw/
+/03B_econometrics_validation/theory/results/raw/
+
+# Obsidian window/layout state is local to this machine.
+/03B_econometrics_validation/.obsidian/workspace.json
 
 # Local Python bytecode and interpreter caches.
 __pycache__/

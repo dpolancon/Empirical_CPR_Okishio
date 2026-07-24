@@ -1,3 +1,0 @@
-process,estimated_exponent,theoretical_exponent,absolute_error,passes_tolerance,scope
-stationary-residual,1.993737822758632,2.0,0.006262177241368017,True,"oracle residual diagnostic, not an estimated cross-product CPR test"
-unit-root-residual,3.9826271979120675,4.0,0.01737280208793246,True,"oracle residual diagnostic, not an estimated cross-product CPR test"
