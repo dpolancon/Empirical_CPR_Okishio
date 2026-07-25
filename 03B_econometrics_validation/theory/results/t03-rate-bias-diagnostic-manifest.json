@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "diagnostic": "t03-rate-bias-diagnostic",
+  "seed": 20260724,
+  "replications": 2000,
+  "sample_sizes": [
+    50,
+    100,
+    250,
+    500,
+    1000
+  ],
+  "finite_sample_stress_point": 50,
+  "primary_asymptotic_sample_sizes": [
+    250,
+    500,
+    1000
+  ],
+  "batch_size": 250,
+  "bootstrap_replications": 2000,
+  "beta": [
+    0.5,
+    1.0,
+    -0.75,
+    0.25
+  ],
+  "error_serial_coefficient": 0.5,
+  "covariance_matrices": {
+    "exogenous-error": [
+      [
+        1.0,
+        0.5,
+        0.0
+      ],
+      [
+        0.5,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "severe-endogeneity": [
+      [
+        1.0,
+        0.5,
+        0.7
+      ],
+      [
+        0.5,
+        1.0,
+        0.7
+      ],
+      [
+        0.7,
+        0.7,
+        1.0
+      ]
+    ]
+  },
+  "cholesky_factors": {
+    "exogenous-error": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.5,
+        0.8660254037844386,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "severe-endogeneity": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.5,
+        0.8660254037844386,
+        0.0
+      ],
+      [
+        0.7,
+        0.40414518843273806,
+        0.5887840577551898
+      ]
+    ]
+  },
+  "covariance_checks": {
+    "exogenous-error": {
+      "symmetric": true,
+      "positive_definite": true
+    },
+    "severe-endogeneity": {
+      "symmetric": true,
+      "positive_definite": true
+    }
+  },
+  "estimators": [
+    "levels-OLS",
+    "cumulative-OLS-diagnostic",
+    "augmented-cross-product-IM-OLS"
+  ],
+  "unaugmented_estimator_is_canonical_imols": false,
+  "rank_gate": {
+    "minimum_normalized_eigenvalue": 1e-10,
+    "maximum_condition_number": 1000000000000.0,
+    "generalized_inverse_used_for_promoted_estimates": false
+  },
+  "rate_tolerance": 0.15,
+  "endogeneity_classifications": {
+    "levels-OLS": "NO_DETECTABLE_EFFECT",
+    "cumulative-OLS-diagnostic": "NO_DETECTABLE_EFFECT",
+    "augmented-cross-product-IM-OLS": "SUPPORTED_IN_THIS_DGP"
+  },
+  "raw_draws_written": false,
+  "canonical_run_manifest_overwritten": false,
+  "t03_status_changed": false,
+  "git": {
+    "branch": "feat/t03-mc-rate-bias-diagnostic",
+    "base_commit": "b6545240b16ef76bd5dac3c1f828ee8f0ed32714"
+  },
+  "software": {
+    "python": "3.12.13",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8"
+  },
+  "executed_commands": [
+    {
+      "command": "git status --short",
+      "exit_status": "0"
+    },
+    {
+      "command": "git branch --show-current",
+      "exit_status": "0"
+    },
+    {
+      "command": "python -m code.theory.t03_rate_bias_diagnostic --replications 20 --sample-sizes 50 100 250 500 1000 --batch-size 10 --bootstrap-replications 50 --output /tmp/t03-rate-bias-smoke",
+      "exit_status": "0"
+    },
+    {
+      "command": "python -m pytest -q",
+      "exit_status": "1 (pytest missing)"
+    },
+    {
+      "command": "python -m pip install --target /tmp/t03-pytest pytest==8.4.2",
+      "exit_status": "0"
+    },
+    {
+      "command": "PYTHONPATH=/tmp/t03-pytest MPLCONFIGDIR=/tmp/matplotlib-cache python -m pytest -q",
+      "exit_status": "1 (one diagnostic test failed before repair)"
+    },
+    {
+      "command": "PYTHONPATH=/tmp/t03-pytest MPLCONFIGDIR=/tmp/matplotlib-cache python -m pytest -q",
+      "exit_status": "0 (12 passed)"
+    },
+    {
+      "command": "python code/validate_note_repository.py",
+      "exit_status": "1 (notebooklm missing)"
+    },
+    {
+      "command": "python -m pip install --target /tmp/t03-note-deps 'notebooklm-py[browser]==0.5.0'",
+      "exit_status": "0"
+    },
+    {
+      "command": "PYTHONPATH=/tmp/t03-note-deps python code/validate_note_repository.py",
+      "exit_status": "1 (T01/T03 top-level notes missing frontmatter; NotebookLM views/attempts migration targets missing)"
+    },
+    {
+      "command": "MPLCONFIGDIR=/tmp/matplotlib-cache python -m code.theory.t03_rate_bias_diagnostic --seed 20260724 --replications 2000 --sample-sizes 50 100 250 500 1000 --batch-size 250 --bootstrap-replications 2000",
+      "exit_status": "0"
+    },
+    {
+      "command": "PYTHONPATH=/tmp/t03-pytest MPLCONFIGDIR=/tmp/matplotlib-cache python -m pytest -q",
+      "exit_status": "0 (12 passed after report repair)"
+    },
+    {
+      "command": "python -m code.theory.t03_rate_bias_diagnostic --seed 20260724 --replications 2000 --sample-sizes 50 100 250 500 1000 --batch-size 250 --bootstrap-replications 2000 --record-command git status --short::0 --record-command git branch --show-current::0 --record-command python -m code.theory.t03_rate_bias_diagnostic --replications 20 --sample-sizes 50 100 250 500 1000 --batch-size 10 --bootstrap-replications 50 --output /tmp/t03-rate-bias-smoke::0 --record-command python -m pytest -q::1 (pytest missing) --record-command python -m pip install --target /tmp/t03-pytest pytest==8.4.2::0 --record-command PYTHONPATH=/tmp/t03-pytest MPLCONFIGDIR=/tmp/matplotlib-cache python -m pytest -q::1 (one diagnostic test failed before repair) --record-command PYTHONPATH=/tmp/t03-pytest MPLCONFIGDIR=/tmp/matplotlib-cache python -m pytest -q::0 (12 passed) --record-command python code/validate_note_repository.py::1 (notebooklm missing) --record-command python -m pip install --target /tmp/t03-note-deps 'notebooklm-py[browser]==0.5.0'::0 --record-command PYTHONPATH=/tmp/t03-note-deps python code/validate_note_repository.py::1 (T01/T03 top-level notes missing frontmatter; NotebookLM views/attempts migration targets missing) --record-command MPLCONFIGDIR=/tmp/matplotlib-cache python -m code.theory.t03_rate_bias_diagnostic --seed 20260724 --replications 2000 --sample-sizes 50 100 250 500 1000 --batch-size 250 --bootstrap-replications 2000::0 --record-command PYTHONPATH=/tmp/t03-pytest MPLCONFIGDIR=/tmp/matplotlib-cache python -m pytest -q::0 (12 passed after report repair)",
+      "exit_status": "0 (artifact generation reached)"
+    }
+  ],
+  "artifacts": [
+    "t03-rate-bias-diagnostic-summary.csv",
+    "t03-rate-bias-diagnostic-slopes.csv",
+    "t03-rate-bias-diagnostic-scaling.csv",
+    "t03-rate-bias-diagnostic-manifest.json",
+    "t03-rate-bias-convergence.png",
+    "t03-rate-bias-endogeneity.png",
+    "t03-rate-bias-diagnostic-report.md"
+  ]
+}
